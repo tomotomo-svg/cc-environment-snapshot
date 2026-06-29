@@ -1,0 +1,18 @@
+# 秘密情報・設定ファイル
+.env
+.env.*
+!.env.example
+*.pem
+*-credentials.json
+secrets/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# エディタ
+.cursor/
+.vscode/settings.json
+*.swp
+*.swo

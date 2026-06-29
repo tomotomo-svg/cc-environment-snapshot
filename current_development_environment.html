@@ -1,0 +1,1737 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code 開発環境リファレンス 2026-06-29</title>
+<style>
+/* ===== Reset & Base ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f8f9fa;
+  --bg2: #ffffff;
+  --bg3: #f0f4f8;
+  --text: #1a1a2e;
+  --text2: #4a4a6a;
+  --text3: #6b7280;
+  --border: #e2e8f0;
+  --accent: #6366f1;
+  --accent2: #8b5cf6;
+  --accent3: #06b6d4;
+  --success: #10b981;
+  --warn: #f59e0b;
+  --danger: #ef4444;
+  --tag-hot-bg: #fff1f2;
+  --tag-hot-text: #e11d48;
+  --tag-regular-bg: #f0fdf4;
+  --tag-regular-text: #16a34a;
+  --tag-sleep-bg: #f8fafc;
+  --tag-sleep-text: #64748b;
+  --card-shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+  --card-shadow-hover: 0 4px 6px rgba(0,0,0,.07), 0 2px 4px rgba(0,0,0,.06);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --radius-lg: 16px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f0f1a;
+    --bg2: #1a1a2e;
+    --bg3: #16213e;
+    --text: #e8e8f0;
+    --text2: #a8a8c0;
+    --text3: #6b7280;
+    --border: #2d2d4e;
+    --tag-hot-bg: #3b0f18;
+    --tag-hot-text: #fca5a5;
+    --tag-regular-bg: #052e16;
+    --tag-regular-text: #86efac;
+    --tag-sleep-bg: #1e293b;
+    --tag-sleep-text: #94a3b8;
+    --card-shadow: 0 1px 3px rgba(0,0,0,.3), 0 1px 2px rgba(0,0,0,.2);
+    --card-shadow-hover: 0 4px 6px rgba(0,0,0,.25), 0 2px 4px rgba(0,0,0,.2);
+  }
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, "Hiragino Sans", "Yu Gothic UI", "Noto Sans JP", sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text);
+  background: var(--bg);
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ===== Top Nav ===== */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  overflow-x: auto;
+  white-space: nowrap;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+}
+.top-nav .brand {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+.top-nav a {
+  font-size: 12px;
+  color: var(--text2);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: background .15s, color .15s;
+}
+.top-nav a:hover {
+  background: var(--bg3);
+  color: var(--text);
+  text-decoration: none;
+}
+
+/* ===== Main Layout ===== */
+.main { max-width: 960px; margin: 0 auto; padding: 0 16px 80px; }
+
+/* ===== Hero ===== */
+.hero {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 50%, var(--accent3) 100%);
+  color: white;
+  padding: 48px 32px 40px;
+  border-radius: var(--radius-lg);
+  margin: 24px 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.06);
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: -20px;
+  width: 250px; height: 250px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.04);
+}
+.hero-kicker {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  opacity: .8;
+  margin-bottom: 8px;
+}
+.hero h1 {
+  font-size: clamp(20px, 4vw, 28px);
+  font-weight: 800;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+.hero-sub {
+  font-size: 14px;
+  opacity: .85;
+  margin-bottom: 28px;
+  max-width: 520px;
+}
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.stat-chip {
+  background: rgba(255,255,255,.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 999px;
+  padding: 6px 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.stat-chip .num { font-size: 18px; font-weight: 800; }
+
+/* ===== Section Titles ===== */
+.section {
+  margin-top: 40px;
+}
+.section-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title .icon { font-size: 22px; }
+
+/* ===== Card Grid ===== */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+.card-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+/* ===== Card ===== */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  transition: box-shadow .2s, transform .2s;
+}
+.card:hover {
+  box-shadow: var(--card-shadow-hover);
+  transform: translateY(-1px);
+}
+.card-head {
+  padding: 14px 16px 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.card-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+}
+.card-sub {
+  font-size: 12px;
+  color: var(--text2);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+.card-body {
+  padding: 0 16px 14px;
+  font-size: 13px;
+  color: var(--text2);
+}
+
+/* ===== Tags ===== */
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+}
+.tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.tag-hot { background: var(--tag-hot-bg); color: var(--tag-hot-text); }
+.tag-regular { background: var(--tag-regular-bg); color: var(--tag-regular-text); }
+.tag-sleep { background: var(--tag-sleep-bg); color: var(--tag-sleep-text); }
+.tag-warn { background: #fffbeb; color: #92400e; }
+.tag-info { background: #eff6ff; color: #1e40af; }
+@media (prefers-color-scheme: dark) {
+  .tag-warn { background: #2d1f00; color: #fcd34d; }
+  .tag-info { background: #0c1a3b; color: #93c5fd; }
+}
+
+/* ===== Details / Summary ===== */
+details {
+  margin-top: 10px;
+  border-top: 1px solid var(--border);
+}
+details summary {
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+  transition: background .15s;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary::before {
+  content: '▶';
+  font-size: 10px;
+  transition: transform .2s;
+  color: var(--text3);
+}
+details[open] summary::before { transform: rotate(90deg); }
+details summary:hover { background: var(--bg3); }
+.details-body {
+  padding: 12px 16px 14px;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.6;
+}
+
+/* ===== Table ===== */
+.table-wrap { overflow-x: auto; margin: 10px 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+th {
+  background: var(--bg3);
+  color: var(--text2);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg3); }
+
+/* ===== Info Boxes ===== */
+.info-box {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  margin: 12px 0;
+  font-size: 13px;
+  line-height: 1.6;
+  border-left: 3px solid;
+}
+.info-box.note { background: #eff6ff; border-color: #3b82f6; color: #1e3a6e; }
+.info-box.tip { background: #f0fdf4; border-color: #22c55e; color: #14532d; }
+.info-box.warn { background: #fffbeb; border-color: #f59e0b; color: #78350f; }
+.info-box.danger { background: #fff1f2; border-color: #ef4444; color: #7f1d1d; }
+.info-box strong { display: block; margin-bottom: 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+@media (prefers-color-scheme: dark) {
+  .info-box.note { background: #0c1a3b; border-color: #3b82f6; color: #93c5fd; }
+  .info-box.tip { background: #052e16; border-color: #22c55e; color: #86efac; }
+  .info-box.warn { background: #2d1f00; border-color: #f59e0b; color: #fcd34d; }
+  .info-box.danger { background: #2d0a0a; border-color: #ef4444; color: #fca5a5; }
+}
+
+/* ===== Category Header ===== */
+.cat-header {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin: 14px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+.cat-header .count {
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--accent);
+  color: white;
+  padding: 1px 7px;
+  border-radius: 999px;
+  margin-left: auto;
+}
+
+/* ===== Stats Dashboard (Numbers Section) ===== */
+.stats-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+.stat-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 14px;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+}
+.stat-card .big-num {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--accent);
+  line-height: 1.1;
+  display: block;
+}
+.stat-card .stat-label {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 4px;
+}
+.stat-card .stat-desc {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+/* ===== SVG Placeholder ===== */
+.svg-placeholder {
+  background: var(--bg3);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-lg);
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--text3);
+  margin: 20px 0;
+}
+.svg-placeholder p { font-size: 14px; margin-top: 8px; }
+
+/* ===== Code Block ===== */
+pre, code {
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+  font-size: 12px;
+}
+pre {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  overflow-x: auto;
+  line-height: 1.5;
+  margin: 8px 0;
+}
+code {
+  background: var(--bg3);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+/* ===== Flow Diagram ===== */
+.flow-diagram {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin: 12px 0;
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--text2);
+  overflow-x: auto;
+}
+.flow-diagram .highlight { color: var(--accent); font-weight: 700; }
+.flow-diagram .arrow { color: var(--text3); }
+
+/* ===== Checklist ===== */
+.checklist {
+  list-style: none;
+  margin: 10px 0;
+}
+.checklist li {
+  padding: 6px 0 6px 24px;
+  position: relative;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border);
+}
+.checklist li:last-child { border-bottom: none; }
+.checklist li::before {
+  content: '☐';
+  position: absolute;
+  left: 0;
+  color: var(--text3);
+  font-size: 14px;
+}
+
+/* ===== Rank Card (Section 9) ===== */
+.rank-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin: 10px 0;
+  box-shadow: var(--card-shadow);
+}
+.rank-card h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.rank-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: white;
+}
+.rank-card p { font-size: 13px; color: var(--text2); margin-bottom: 6px; }
+.rank-card ul {
+  padding-left: 16px;
+  font-size: 13px;
+  color: var(--text2);
+}
+.rank-card li { margin-bottom: 3px; }
+
+/* ===== Summary Table (Section 10) ===== */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+.summary-item {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--card-shadow);
+}
+.summary-item .summary-label {
+  font-size: 11px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 6px;
+}
+.summary-item .summary-count {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1;
+}
+.summary-item .summary-example {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+/* ===== Footer ===== */
+.footer {
+  margin-top: 60px;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 12px;
+  color: var(--text3);
+  line-height: 1.8;
+}
+
+/* ===== Back to Top ===== */
+.back-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 20px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, .4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  transition: background .2s, transform .2s;
+}
+.back-to-top:hover { background: var(--accent2); transform: scale(1.1); }
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+  .hero { padding: 30px 20px 28px; }
+  .stats-row { gap: 8px; }
+  .stat-chip { font-size: 11px; padding: 4px 12px; }
+  .card-grid, .card-grid-2 { grid-template-columns: 1fr; }
+}
+
+/* ===== Print ===== */
+@media print {
+  .top-nav, .back-to-top { display: none; }
+  details[open] .details-body,
+  details .details-body { display: block; }
+  .card { page-break-inside: avoid; }
+  body { font-size: 12px; }
+  .hero { background: #6366f1 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @page { margin: 15mm; }
+}
+</style>
+</head>
+<body>
+
+<!-- Top Navigation -->
+<nav class="top-nav" id="top">
+  <span class="brand">🖥️ CC-ENV</span>
+  <a href="#s1">CCとは</a>
+  <a href="#s2">数字</a>
+  <a href="#s3">本体</a>
+  <a href="#s4">MCP</a>
+  <a href="#s5">Skill</a>
+  <a href="#s6">CLI</a>
+  <a href="#s7">連携フロー</a>
+  <a href="#s8">認証</a>
+  <a href="#s9">参考</a>
+  <a href="#s10">振り返り</a>
+</nav>
+
+<div class="main">
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-kicker">2026-06-29 スナップショット</div>
+  <h1>Claude Code 開発環境リファレンス<br>2026-06-29</h1>
+  <p class="hero-sub">Claude Code を中心に、MCP・Skill・Hook・CLI が組み合わさった自動化環境の全体図。DIG部門メンバーへの共有・自身の整理・時点記録の3目的で作成。</p>
+  <div class="stats-row">
+    <div class="stat-chip">🧩 <span class="num">23</span>本 MCP</div>
+    <div class="stat-chip">📋 <span class="num">158</span>個 Skill</div>
+    <div class="stat-chip">⚡ <span class="num">12</span>本 Hook</div>
+    <div class="stat-chip">📜 <span class="num">24</span>本 Rule</div>
+    <div class="stat-chip">🛠️ <span class="num">26</span>本+ CLI</div>
+  </div>
+</section>
+
+<!-- ===== SYSTEM OVERVIEW (SVG Placeholder) ===== -->
+<section class="section" id="overview">
+  <h2 class="section-title"><span class="icon">🗺️</span>システム全体図</h2>
+  <div class="svg-placeholder">
+    <div style="font-size:40px">🔄</div>
+    <p><strong>システム全体図（SVG）は Step 3.5 で追加予定</strong></p>
+    <p style="margin-top:6px;font-size:12px">Claude Code を中心とした放射状マップ（MCP・CLI・Skill・Hook の配置）</p>
+  </div>
+</section>
+
+<!-- ===== SECTION 1: CCとは ===== -->
+<section class="section" id="s1">
+  <h2 class="section-title"><span class="icon">💡</span>Section 1: Claude Code とは何か</h2>
+
+  <div class="info-box note">
+    <strong>💬 非エンジニアの方へ</strong>
+    Claude Code は、Anthropic 社（ChatGPT の競合）が提供する <strong>AI アシスタントをターミナル（黒い画面）で動かすツール</strong> です。普通の AI チャットと違い、「ファイルを読む・書く・コマンドを実行する・外部サービスを呼ぶ」が全部できます。
+  </div>
+
+  <h3 style="margin:20px 0 10px;font-size:15px;color:var(--text)">なぜこんなに複雑な環境になっているのか</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>時期</th><th>追加したもの</th></tr></thead>
+      <tbody>
+        <tr><td>2026年3月〜</td><td>Claude Code 本体・基本設定</td></tr>
+        <tr><td>2026年4月〜</td><td>Google Workspace 連携（Drive/Gmail/Calendar）</td></tr>
+        <tr><td>2026年5月〜</td><td>GCP 連携・Skill 体系化・Hook 自動化</td></tr>
+        <tr><td>2026年6月〜</td><td>記憶系MCP（engram/Linksee）・KeyVault・セキュリティ強化</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-box warn" style="margin-top:14px">
+    <strong>⚠️ 複雑さの目的</strong>
+    「難しいことをしたい」のではなく、「<strong>繰り返す作業をゼロにしたい</strong>」が目的です。Skill・Hook・MCP は、毎回同じ指示をしなくて済むようにするための「定型化」です。
+  </div>
+</section>
+
+<!-- ===== SECTION 2: 数字 ===== -->
+<section class="section" id="s2">
+  <h2 class="section-title"><span class="icon">📊</span>Section 2: 数字で見る環境規模</h2>
+  <div class="stats-dashboard">
+    <div class="stat-card">
+      <span class="big-num">23</span>
+      <div class="stat-label">🧩 MCP</div>
+      <div class="stat-desc">外部サービスへの接続口。Google・GitHub・AI記憶・業務SaaS等</div>
+    </div>
+    <div class="stat-card">
+      <span class="big-num">158</span>
+      <div class="stat-label">📋 Skill</div>
+      <div class="stat-desc">「〇〇して」で起動する定型作業の型紙</div>
+    </div>
+    <div class="stat-card">
+      <span class="big-num">12</span>
+      <div class="stat-label">⚡ Hook</div>
+      <div class="stat-desc">使用のたびに裏で動く安全装置・自動記録</div>
+    </div>
+    <div class="stat-card">
+      <span class="big-num">24</span>
+      <div class="stat-label">📜 Rule</div>
+      <div class="stat-desc">CC が必ず読む共通ルール集（失敗学習含む）</div>
+    </div>
+    <div class="stat-card">
+      <span class="big-num">26+</span>
+      <div class="stat-label">🛠️ CLI</div>
+      <div class="stat-desc">ターミナルから使うコマンドラインツール</div>
+    </div>
+    <div class="stat-card">
+      <span class="big-num">1.6GB</span>
+      <div class="stat-label">💾 設定ファイル</div>
+      <div class="stat-desc">~/.claude/ 配下の総容量</div>
+    </div>
+  </div>
+  <div class="info-box note">
+    <strong>📝 「1.6 GB」の正体</strong>
+    大部分は Skill ファイル群（158個×複数ファイル）と CC のキャッシュです。実際の設定ロジック（ルール・Hook 等）は数MB 程度です。
+  </div>
+</section>
+
+<!-- ===== SECTION 3: Claude Code 本体 ===== -->
+<section class="section" id="s3">
+  <h2 class="section-title"><span class="icon">🖥️</span>Section 3: 中心：Claude Code 本体</h2>
+
+  <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Claude Code は <code>~/.claude/</code> 配下の設定ファイル群で動作をカスタマイズします。</p>
+
+  <!-- フォルダ構成 -->
+  <div class="card" style="margin-bottom:14px">
+    <div class="card-head">
+      <span class="card-icon">📁</span>
+      <div>
+        <div class="card-title">~/.claude/ のフォルダ構成</div>
+        <div class="card-sub">全プロジェクト共通の設定ディレクトリ</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <pre>~/.claude/
+├── CLAUDE.md          ← 全プロジェクト共通の基本指示書（200行ガイドライン）
+├── settings.json      ← CC本体の動作設定（モデル・権限・Hook登録）
+├── rules/             ← 詳細ルール集（24ファイル）
+├── skills/            ← Skill 格納場所（158個）
+├── hooks/             ← Hook スクリプト（12本）
+├── scripts/           ← ユーティリティスクリプト（90+本）
+├── plans/             ← CC が作成した実装計画書
+└── projects/          ← プロジェクト別のメモリキャッシュ</pre>
+    </div>
+  </div>
+
+  <!-- CLAUDE.md の説明 -->
+  <div class="card" style="margin-bottom:14px">
+    <div class="card-head">
+      <span class="card-icon">📄</span>
+      <div>
+        <div class="card-title">CLAUDE.md — 全体指示書</div>
+        <div class="card-sub">全プロジェクト共通の「CC への基本指示書」</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <ul style="font-size:13px;padding-left:16px;line-height:1.8">
+        <li>常に日本語で回答する / 非エンジニア向けの説明スタイル</li>
+        <li>秘密情報の扱い方 / 失敗学習の参照方法</li>
+        <li>自動化ポリシー（いつCCが自動でやるか・ユーザーに聞くか）</li>
+      </ul>
+      <div class="tag-row">
+        <span class="tag tag-warn">⚠️ 200行ガイドライン</span>
+        <span class="tag tag-info">🔄 セッション終了時に更新</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- rules/ の表 -->
+  <h3 style="margin:20px 0 10px;font-size:15px;color:var(--text)">rules/（ルールファイル 24本）</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ファイル</th><th>役割</th><th>頻度</th></tr></thead>
+      <tbody>
+        <tr><td><code>safety-checklist.md</code></td><td>削除禁止・変更前確認・秘密情報禁止 等5項目</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+        <tr><td><code>failure-learning.md</code></td><td>過去の失敗事例 F-28 件を蓄積・次回参照</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+        <tr><td><code>cc-automation-policy.md</code></td><td>CC が自動化できる操作の判断基準</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+        <tr><td><code>keyvault-policy.md</code></td><td>APIキー・パスワードの3層管理方針</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+        <tr><td><code>session-lifecycle.md</code></td><td>セッション開始/終了/切替の標準手順</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+        <tr><td><code>obsidian-rules.md</code></td><td>Obsidian へのファイル保存・整形ルール</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+        <tr><td><code>dashboard-data-integrity.md</code></td><td>経営数字の正確性に関する最優先ルール</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+        <tr><td><code>linksee-rules.md</code></td><td>Linksee Memory セッション間記憶ルール</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+        <tr><td><code>handover-protocol.md</code></td><td>引き継ぎ漏れ防止プロトコル（3層冗長）</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+        <tr><td><code>db-shared-infra.md</code></td><td>共有PostgreSQL 運用ルール</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+        <tr><td><code>second-brain-vault.md</code></td><td>Obsidian Vault（第二の脳）連携ルール</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+        <tr><td><code>model-recommendation.md</code></td><td>Opus/Sonnet 使い分け推奨ルール</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+        <tr><td><code>youtube-knowledge-flow.md</code></td><td>YouTube→Vault 取込みフロー</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+        <tr><td><code>slide-presentation.md</code></td><td>プレゼン資料自動作成ルール</td><td><span class="tag tag-sleep">💤 保有</span></td></tr>
+        <tr><td><code>skill-checker-rules.md</code></td><td>GitHub Skill セキュリティスキャン</td><td><span class="tag tag-sleep">💤 保有</span></td></tr>
+        <tr><td colspan="3" style="font-size:11px;color:var(--text3);padding:6px 12px">他9ファイル省略（common-paths.md / google-chat-automation.md / sort-clippings.md 等）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Hook 12本 -->
+  <h3 style="margin:24px 0 10px;font-size:15px;color:var(--text)">⚡ Hook（自動化トリガー）12本</h3>
+
+  <div class="info-box tip">
+    <strong>🔁 Hook とは</strong>
+    「CC が特定の動作をするたびに自動実行されるスクリプト」です。人間でいう「クセ・習慣」に相当します。意識しなくても勝手に動きます。
+  </div>
+
+  <div class="table-wrap" style="margin-top:12px">
+    <table>
+      <thead><tr><th>タイミング</th><th>本数</th><th>説明</th></tr></thead>
+      <tbody>
+        <tr><td>SessionStart</td><td>2本</td><td>セッション開始時に自動実行</td></tr>
+        <tr><td>PreToolUse</td><td>2本</td><td>ツール使用前に自動チェック</td></tr>
+        <tr><td>PostToolUse</td><td>3本</td><td>ツール使用後に自動記録</td></tr>
+        <tr><td>SessionEnd</td><td>4本</td><td>セッション終了時に自動保存</td></tr>
+        <tr><td>Notification</td><td>1本</td><td>CC が通知する時</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <details style="border:1px solid var(--border);border-radius:var(--radius);margin-top:10px;overflow:hidden">
+    <summary>⚡ 12本の Hook 詳細（クリックで展開）</summary>
+    <div class="details-body">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Hook 名</th><th>タイミング</th><th>役割</th><th>重要度</th></tr></thead>
+          <tbody>
+            <tr><td><code>auto-sync-knowledge.sh</code></td><td>SessionStart</td><td>共通ナレッジベースを自動 git push</td><td><span class="tag tag-hot">🔥 常用</span> <span class="tag tag-warn">⚠️ 代替不可</span></td></tr>
+            <tr><td><code>cleanup-image-cache.sh</code></td><td>SessionStart</td><td>14日以上前の画像キャッシュを自動削除</td><td><span class="tag tag-regular">✅ 定期</span> <span class="tag tag-info">🆓 単体完結</span></td></tr>
+            <tr><td><code>pre-bash-secret-guard.sh</code></td><td>PreToolUse</td><td>危険コマンド（秘密情報の標準出力）をブロック</td><td><span class="tag tag-hot">🔥 常用</span> <span class="tag tag-warn">⚠️ 代替不可</span></td></tr>
+            <tr><td><code>pre-write-claude-md-path.sh</code></td><td>PreToolUse</td><td>CLAUDE.md 書き込み前にパスを明示</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+            <tr><td><code>post-bash-secret-detect.sh</code></td><td>PostToolUse</td><td>コマンド出力に秘密情報パターンを検知</td><td><span class="tag tag-hot">🔥 常用</span> <span class="tag tag-warn">⚠️ 代替不可</span></td></tr>
+            <tr><td><code>dev-environment-track.sh</code></td><td>PostToolUse</td><td>ツールインストール時にインベントリ更新を促す</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+            <tr><td><code>knowledge-map-trigger.sh</code></td><td>PostToolUse</td><td>Skill 追加等でナレッジマップ更新を促す</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+            <tr><td><code>session-end-summary.sh</code></td><td>SessionEnd</td><td>セッション終了時の要約を自動生成</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+            <tr><td><code>session-end-linksee-trigger.sh</code></td><td>SessionEnd</td><td>Linksee Memory への記録を促す</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+            <tr><td><code>session-end-engram-save.sh</code></td><td>SessionEnd</td><td>engram への記憶保存を促す</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+            <tr><td><code>session-end-knowledge-map-check.sh</code></td><td>SessionEnd</td><td>ナレッジマップ更新チェック</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+            <tr><td><code>notification-complete.sh</code></td><td>Notification</td><td>作業完了通知をシステム通知に転送</td><td><span class="tag tag-sleep">💤 保有</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="info-box tip" style="margin-top:12px">
+        <strong>🛡️ セキュリティ 3層防御の仕組み</strong>
+        <code>pre-bash-secret-guard.sh</code>（ブロック）→ <code>post-bash-secret-detect.sh</code>（検知）→ <code>safety-checklist.md</code>（ルール）の3層で、APIキー・パスワードの意図せぬ露出を防ぎます。過去に F-24/F-26/F-27/F-28（DB パスワード漏れ 4件）の失敗から構築した防御です。
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ===== SECTION 4: MCP ===== -->
+<section class="section" id="s4">
+  <h2 class="section-title"><span class="icon">🧩</span>Section 4: 周辺：MCP 23本</h2>
+
+  <div class="info-box note">
+    <strong>🔌 MCP とは（Model Context Protocol）</strong>
+    CC が外部サービスに接続するための「規格化されたプラグイン」です。USB ポートに例えると、CC 本体が PC で、MCP が各種 USB デバイスに相当します。
+  </div>
+
+  <!-- Google Workspace 系 -->
+  <div class="cat-header">
+    <span>📧</span> Google Workspace 系
+    <span class="count">3本</span>
+  </div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">📧</span>
+        <div>
+          <div class="card-title">Gmail MCP</div>
+          <div class="card-sub">メールの読み書き・ラベル管理・スレッド検索</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row">
+          <span class="tag tag-hot">🔥 常用</span>
+          <span class="tag tag-info">★★☆ 設定済み即使用可</span>
+        </div>
+        <details>
+          <summary>活用例・メリット</summary>
+          <div class="details-body">
+            <ul style="padding-left:16px">
+              <li>「特定会社からのメールを検索して」→ スレッド一覧・要約</li>
+              <li>「このメールに返信の下書きを作って」→ Draft 作成まで CC が実行</li>
+              <li>フィルタ・ラベルの一括設定（Gmail 移行作業で活用）</li>
+            </ul>
+            <p style="margin-top:8px"><strong>メリット:</strong> メール確認・返信の定型作業が CC との会話で完結</p>
+          </div>
+        </details>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">📁</span>
+        <div>
+          <div class="card-title">Google Drive MCP</div>
+          <div class="card-sub">ファイル作成・検索・共有設定</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row">
+          <span class="tag tag-hot">🔥 常用</span>
+          <span class="tag tag-info">★★☆</span>
+        </div>
+        <details>
+          <summary>活用例・メリット</summary>
+          <div class="details-body">
+            <ul style="padding-left:16px">
+              <li>「先週作ったスプレッドシートを検索して」→ ファイルメタデータ取得</li>
+              <li>「このファイルを部署全員に共有して」→ 権限設定まで CC が実行</li>
+            </ul>
+            <p style="margin-top:8px"><strong>メリット:</strong> Drive 整理・共有設定の手動操作がゼロになる</p>
+          </div>
+        </details>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">📅</span>
+        <div>
+          <div class="card-title">Google Calendar MCP</div>
+          <div class="card-sub">予定作成・一覧・空き時間提案</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row">
+          <span class="tag tag-regular">✅ 定期</span>
+          <span class="tag tag-info">★★☆</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Google Cloud 系 -->
+  <div class="cat-header">
+    <span>☁️</span> Google Cloud 系
+    <span class="count">5本</span>
+  </div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">☁️</span>
+        <div>
+          <div class="card-title">gcloud-mcp</div>
+          <div class="card-sub">gcloud コマンドを MCP 経由で実行</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row">
+          <span class="tag tag-hot">🔥 常用</span>
+          <span class="tag tag-warn">⚠️ 代替不可</span>
+          <span class="tag tag-info">★★★</span>
+        </div>
+        <details>
+          <summary>活用例・メリット</summary>
+          <div class="details-body">
+            <ul style="padding-left:16px">
+              <li>GCP プロジェクト作成・IAM 権限付与・API 有効化</li>
+              <li>Cloud Run へのデプロイ・サービス設定変更</li>
+              <li>Cloud SQL インスタンスの操作</li>
+            </ul>
+            <p style="margin-top:8px"><strong>メリット:</strong> GCP の操作を会話で実行。CLI コマンドを覚えなくてよい</p>
+          </div>
+        </details>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🔥</span>
+        <div>
+          <div class="card-title">firebase MCP</div>
+          <div class="card-sub">Firebase プロジェクト管理・デプロイ・ルール設定</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🪣</span>
+        <div>
+          <div class="card-title">google-cloud-storage MCP</div>
+          <div class="card-sub">GCS バケット・オブジェクト操作</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">📈</span>
+        <div>
+          <div class="card-title">google-cloud-observability MCP</div>
+          <div class="card-sub">Cloud Monitoring・Logging・Trace の閲覧</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">📚</span>
+        <div>
+          <div class="card-title">google-devknowledge MCP</div>
+          <div class="card-sub">Google Cloud 公式ドキュメント検索</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 開発支援系 -->
+  <div class="cat-header">
+    <span>🛠️</span> 開発支援系
+    <span class="count">5本</span>
+  </div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">📄</span>
+        <div>
+          <div class="card-title">filesystem MCP</div>
+          <div class="card-sub">ローカルファイルの読み書き（開放フォルダ限定）</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row">
+          <span class="tag tag-hot">🔥 常用</span>
+          <span class="tag tag-info">★☆☆ 導入簡単</span>
+        </div>
+        <details>
+          <summary>活用例・メリット</summary>
+          <div class="details-body">
+            <ul style="padding-left:16px">
+              <li>CC がローカルファイルを直接読み書きできる（開放したフォルダのみ）</li>
+              <li>Obsidian Vault の直接編集もこの MCP 経由</li>
+            </ul>
+            <p style="margin-top:8px"><strong>メリット:</strong> 「ファイルの内容を貼り付けて」が不要になる</p>
+          </div>
+        </details>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🌿</span>
+        <div>
+          <div class="card-title">git MCP</div>
+          <div class="card-sub">git コマンドを MCP 経由で実行</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row"><span class="tag tag-hot">🔥 常用</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🐙</span>
+        <div>
+          <div class="card-title">github MCP</div>
+          <div class="card-sub">GitHub リポジトリ・PR・Issue・コードサーチ</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row"><span class="tag tag-hot">🔥 常用</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">📖</span>
+        <div>
+          <div class="card-title">context7 MCP</div>
+          <div class="card-sub">有名ライブラリ・フレームワークの最新ドキュメント検索</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row">
+          <span class="tag tag-hot">🔥 常用</span>
+          <span class="tag tag-info">★☆☆ 導入簡単・無料</span>
+        </div>
+        <details>
+          <summary>活用例・メリット</summary>
+          <div class="details-body">
+            <ul style="padding-left:16px">
+              <li>「Next.js の最新の Image コンポーネントの使い方を調べて」</li>
+              <li>「Prisma 6 の connect 構文を確認して」</li>
+            </ul>
+            <p style="margin-top:8px"><strong>メリット:</strong> CC の「古い知識」に頼らず最新ドキュメントで回答。コードのバグが減る</p>
+          </div>
+        </details>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🚀</span>
+        <div>
+          <div class="card-title">cloudrun MCP</div>
+          <div class="card-sub">Cloud Run サービスのデプロイ・ログ取得</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ナレッジ・記憶系 -->
+  <div class="cat-header">
+    <span>🧠</span> ナレッジ・記憶系
+    <span class="count">3本</span>
+  </div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🧠</span>
+        <div>
+          <div class="card-title">engram MCP</div>
+          <div class="card-sub">セッションをまたいだ永続記憶（神経科学的な記憶モデル）</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row">
+          <span class="tag tag-hot">🔥 常用</span>
+          <span class="tag tag-warn">⚠️ 代替不可</span>
+        </div>
+        <details>
+          <summary>engram の仕組み・活用例</summary>
+          <div class="details-body">
+            <p>CC はデフォルトでは会話が終わると記憶がリセットされます。engram はそれを解決します。</p>
+            <ul style="padding-left:16px;margin-top:8px">
+              <li><strong>remember</strong>: 「このプロジェクトの方針は〇〇」→ 保存</li>
+              <li><strong>recall</strong>: 次のセッション開始時に前回の文脈を復元</li>
+              <li><strong>reinforce</strong>: 役立った記憶を強化（使うほど思い出しやすくなる）</li>
+              <li><strong>correct</strong>: 間違えた記憶を上書き（消さずに「間違えた」と記録）</li>
+            </ul>
+            <p style="margin-top:8px"><strong>メリット:</strong> 「前回の話を毎回また説明する」が不要になる</p>
+          </div>
+        </details>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🔗</span>
+        <div>
+          <div class="card-title">linksee MCP</div>
+          <div class="card-sub">プロジェクトごとの構造化記憶（goal/caveat/learning）</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row">
+          <span class="tag tag-hot">🔥 常用</span>
+          <span class="tag tag-warn">⚠️ 代替不可</span>
+        </div>
+        <details>
+          <summary>linksee の活用例</summary>
+          <div class="details-body">
+            <ul style="padding-left:16px">
+              <li><strong>goal</strong>: 今セッションで何を達成するか</li>
+              <li><strong>caveat</strong>: 注意すべきこと・やらかしたこと</li>
+              <li><strong>learning</strong>: 今回学んだ重要な判断・技術知識</li>
+            </ul>
+            <p style="margin-top:8px"><strong>メリット:</strong> プロジェクト固有の文脈が消えない</p>
+          </div>
+        </details>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">📓</span>
+        <div>
+          <div class="card-title">notebooklm-mcp</div>
+          <div class="card-sub">Google NotebookLM の操作（ノートブック作成・質問）</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 業務連携系 -->
+  <div class="cat-header">
+    <span>💼</span> 業務連携系
+    <span class="count">6本</span>
+  </div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🔑</span>
+        <div>
+          <div class="card-title">KeyVault MCP</div>
+          <div class="card-sub">APIキー・パスワードの安全な管理・API代行呼び出し</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row">
+          <span class="tag tag-hot">🔥 常用</span>
+          <span class="tag tag-warn">⚠️ 代替不可</span>
+          <span class="tag tag-info">★★★</span>
+        </div>
+        <details>
+          <summary>KeyVault の仕組み（セキュリティの要）</summary>
+          <div class="details-body">
+            <p><strong>問題:</strong> CC にAPIキーを渡すと会話履歴に平文で残る → 漏洩リスク</p>
+            <p><strong>解決:</strong> KeyVault（ローカルアプリ）にキーを保管し、CC は <code>&#123;&#123;KV:token:ラベル名&#125;&#125;</code> というプレースホルダーだけを使う</p>
+            <ol style="padding-left:16px;margin-top:8px">
+              <li>CC が「このAPIキーを使ってリクエストして」と指示</li>
+              <li>KeyVault が内部でプレースホルダーを実際のキーに置き換えてリクエスト送信</li>
+              <li>CC にはキーの実値が一切返ってこない</li>
+            </ol>
+            <p style="margin-top:8px"><strong>登録済みサービス数:</strong> 10+ サービス（勤怠SaaS・労務SaaS・ホスティングサービス等）</p>
+          </div>
+        </details>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🗄️</span>
+        <div>
+          <div class="card-title">Supabase MCP</div>
+          <div class="card-sub">プロジェクト管理・SQL 実行・マイグレーション</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">📦</span>
+        <div>
+          <div class="card-title">Box MCP</div>
+          <div class="card-sub">Box ファイルの操作・共有・メタデータ管理</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🏢</span>
+        <div>
+          <div class="card-title">組織マスタ MCP（自社開発）</div>
+          <div class="card-sub">人物・部門・顧客情報の参照 API</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row"><span class="tag tag-hot">🔥 常用</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🎨</span>
+        <div>
+          <div class="card-title">Miro MCP</div>
+          <div class="card-sub">ボードの作成・図形追加・コメント</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row"><span class="tag tag-sleep">💤 保有</span> <span class="tag tag-info">🆓 単体完結</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skill実行支援 -->
+  <div class="cat-header">
+    <span>⚙️</span> Skill 実行支援
+    <span class="count">1本</span>
+  </div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">⚙️</span>
+        <div>
+          <div class="card-title">clasp MCP</div>
+          <div class="card-sub">Google Apps Script の管理（プロジェクト作成・コード push/pull）</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 5: Skill ===== -->
+<section class="section" id="s5">
+  <h2 class="section-title"><span class="icon">📋</span>Section 5: 拡張：Skill 158個</h2>
+
+  <div class="info-box tip">
+    <strong>📖 Skill とは</strong>
+    「よく使う作業の手順書」を CC に渡したものです。<code>/skill-name</code> と打つだけで起動し、CC がその手順書に沿って動きます。レシピ本に例えると、Skill = レシピ 1本です。
+  </div>
+
+  <!-- 社内情報系 -->
+  <details style="border:1px solid var(--border);border-radius:var(--radius);margin:10px 0;overflow:hidden">
+    <summary>🏢 社内情報系（5個）― 会社情報の参照・問い合わせ</summary>
+    <div class="details-body">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Skill 名</th><th>説明</th><th>頻度</th></tr></thead>
+          <tbody>
+            <tr><td><code>pritech-group</code></td><td>グループ各社の会社概要・事業内容・住所・経営者情報の参照</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+            <tr><td><code>pritech-infra</code></td><td>自社インフラ（DNS・GWS・メール構成）の参照</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+            <tr><td><code>pritech-knowledge</code></td><td>共通ナレッジベースの管理・更新手順</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+            <tr><td><code>add-shared-db</code></td><td>共有 PostgreSQL へ新規 DB を追加する手順</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+            <tr><td><code>superset</code></td><td>Superset IDE の操作ガイド（新規プロジェクト作成等）</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <!-- CC運用系 -->
+  <details style="border:1px solid var(--border);border-radius:var(--radius);margin:10px 0;overflow:hidden">
+    <summary>🤖 Claude Code 運用系（10個）― CC の日常運用を自動化</summary>
+    <div class="details-body">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Skill 名</th><th>説明</th><th>頻度</th></tr></thead>
+          <tbody>
+            <tr><td><code>new-project</code></td><td>新規プロジェクト立ち上げ（README・仕様書・作業記録を自動作成）</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+            <tr><td><code>claude-code-handover</code></td><td>セッション終了時の引き継ぎ（CLAUDE.md更新→git push→Obsidian記録）</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+            <tr><td><code>quick-handover</code></td><td>軽量版引き継ぎ（CLAUDE.md更新+git pushのみ）</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+            <tr><td><code>gas-clasp</code></td><td>GAS 開発の標準手順（clasp 経由のコード管理）</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+            <tr><td><code>claude-md-refactor</code></td><td>CLAUDE.md が肥大化した時の rules/ 切り出し手順</td><td><span class="tag tag-sleep">💤 保有</span></td></tr>
+            <tr><td><code>linksee-memory</code></td><td>Linksee Memory の操作手順（recall/remember 手順）</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+            <tr><td><code>codex-rescue</code></td><td>Codex（OpenAI の CLI AI）への引き継ぎ・レビュー依頼</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+            <tr><td><code>slide-deck-builder</code></td><td>Markdown からプレゼン資料を生成</td><td><span class="tag tag-sleep">💤 保有</span></td></tr>
+            <tr><td><code>youtube-fetcher</code></td><td>YouTube 動画の字幕取得→Vault 保存</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+            <tr><td><code>kb-query</code></td><td>Obsidian Vault の検索・参照</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <!-- GWS系 -->
+  <details style="border:1px solid var(--border);border-radius:var(--radius);margin:10px 0;overflow:hidden">
+    <summary>📊 Google Workspace 系（44個）― GWS 操作の自動化</summary>
+    <div class="details-body">
+      <p style="margin-bottom:10px">gws CLI（Google Workspace CLI）を活用した自動化の Skill 群です。Drive・Sheets・Gmail・Calendar・Chat・Forms・Slides・Docs・Admin 等の操作を CC から実行できます。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Skill 名（代表）</th><th>説明</th><th>頻度</th></tr></thead>
+          <tbody>
+            <tr><td><code>gws-sheets-create</code></td><td>新規スプレッドシート作成・共有設定まで CC が実行</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+            <tr><td><code>gws-drive-manage</code></td><td>Drive ファイルの整理・共有・移動</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+            <tr><td><code>gws-gmail-filter</code></td><td>Gmail フィルタ・ラベルの一括設定</td><td><span class="tag tag-sleep">💤 保有</span></td></tr>
+            <tr><td><code>gws-admin-directory</code></td><td>GWS 組織のユーザー一覧・部署構成の参照</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+            <tr><td><code>gws-chat-send</code></td><td>Google Chat への自動配信設定</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+            <tr><td colspan="3" style="font-size:11px;color:var(--text3)">残り 39個も同様に「gws コマンドの定型手順」を Skill 化したもの</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <!-- Recipe系 -->
+  <details style="border:1px solid var(--border);border-radius:var(--radius);margin:10px 0;overflow:hidden">
+    <summary>🧪 Recipe（定型作業）系（41個）― 繰り返し作業のパターン化</summary>
+    <div class="details-body">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Skill 名</th><th>説明</th><th>頻度</th></tr></thead>
+          <tbody>
+            <tr><td><code>cloud-run-basics</code></td><td>Cloud Run へのデプロイ標準手順</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+            <tr><td><code>cloud-sql-basics</code></td><td>Cloud SQL 接続・マイグレーション手順</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+            <tr><td><code>google-cloud-recipe-auth</code></td><td>GCP 認証（ADC・SA鍵・Workload Identity）の設定パターン</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+            <tr><td><code>google-cloud-recipe-onboarding</code></td><td>新規 GCP プロジェクト立ち上げの標準手順</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+            <tr><td><code>bigquery-basics</code></td><td>BigQuery クエリ・テーブル操作の標準手順</td><td><span class="tag tag-sleep">💤 保有</span></td></tr>
+            <tr><td><code>firebase-basics</code></td><td>Firebase プロジェクト管理の標準手順</td><td><span class="tag tag-sleep">💤 保有</span></td></tr>
+            <tr><td><code>alloydb-basics</code></td><td>AlloyDB 接続・管理の標準手順</td><td><span class="tag tag-sleep">💤 保有</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <!-- GC系 -->
+  <details style="border:1px solid var(--border);border-radius:var(--radius);margin:10px 0;overflow:hidden">
+    <summary>☁️ Google Cloud 系（32個）― GCP 専門知識のナレッジ化</summary>
+    <div class="details-body">
+      <p>Google Cloud の各サービスについて「公式ドキュメントの要点 + 実際の使い方」をまとめた Skill 群です。</p>
+      <div class="table-wrap" style="margin-top:10px">
+        <table>
+          <thead><tr><th>カテゴリ</th><th>含まれる Skill 例</th></tr></thead>
+          <tbody>
+            <tr><td>コンピュート</td><td>Cloud Run / GKE / Cloud Functions</td></tr>
+            <tr><td>データベース</td><td>Cloud SQL / AlloyDB / Firestore</td></tr>
+            <tr><td>AI/ML</td><td>Gemini API / Vertex AI Agent Platform</td></tr>
+            <tr><td>セキュリティ</td><td>WAF / Secret Manager</td></tr>
+            <tr><td>監視・最適化</td><td>Cloud Monitoring / コスト最適化 / SLO設計</td></tr>
+            <tr><td>ネットワーク</td><td>VPC / ファイアウォール / DNS</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <!-- ナレッジ系 -->
+  <details style="border:1px solid var(--border);border-radius:var(--radius);margin:10px 0;overflow:hidden">
+    <summary>📚 ナレッジ・記憶系（10個）― 知識の蓄積・整理</summary>
+    <div class="details-body">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Skill 名</th><th>説明</th><th>頻度</th></tr></thead>
+          <tbody>
+            <tr><td><code>kb-query</code></td><td>Obsidian Vault からの情報検索</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+            <tr><td><code>kb-ingest</code></td><td>外部コンテンツ（記事・動画等）を Vault に取り込む</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+            <tr><td><code>kb-lint</code></td><td>Vault ノートの品質チェック・整形</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+            <tr><td><code>obsidian-markdown</code></td><td>Obsidian Flavored Markdown への整形</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+            <tr><td><code>linksee-memory</code></td><td>Linksee Memory の操作</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <!-- 業務API系 -->
+  <details style="border:1px solid var(--border);border-radius:var(--radius);margin:10px 0;overflow:hidden">
+    <summary>🔌 業務API連携系（4個）</summary>
+    <div class="details-body">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Skill 名</th><th>説明</th><th>頻度</th></tr></thead>
+          <tbody>
+            <tr><td><code>jobcan-api</code></td><td>勤怠SaaS API の操作手順（打刻・集計）</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+            <tr><td><code>smarthr-api</code></td><td>労務SaaS API の操作手順（従業員情報取得）</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+            <tr><td><code>mf-expense-api</code></td><td>経費SaaS API の操作手順</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+            <tr><td><code>xserver-api</code></td><td>ホスティングサービス API 操作手順</td><td><span class="tag tag-sleep">💤 保有</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+</section>
+
+<!-- ===== SECTION 6: CLI ===== -->
+<section class="section" id="s6">
+  <h2 class="section-title"><span class="icon">🛠️</span>Section 6: 土台：CLI ツール 26本+</h2>
+
+  <!-- パッケージ管理 -->
+  <div class="cat-header"><span>📦</span> パッケージ管理系</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ツール</th><th>説明</th><th>頻度</th></tr></thead>
+      <tbody>
+        <tr><td><code>brew</code> (Homebrew)</td><td>macOS のパッケージ管理。「apt-get の Mac版」</td><td><span class="tag tag-hot">🔥 常用</span> <span class="tag tag-warn">⚠️ 代替不可</span></td></tr>
+        <tr><td><code>npm</code></td><td>JavaScript のパッケージ管理</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+        <tr><td><code>pip3</code></td><td>Python のパッケージ管理</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+        <tr><td><code>pipx</code></td><td>Python CLI ツールの独立インストール</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- AI系 -->
+  <div class="cat-header"><span>🤖</span> AI・CC 系</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ツール</th><th>説明</th><th>頻度</th></tr></thead>
+      <tbody>
+        <tr><td><code>claude</code> (Claude Code)</td><td>CC 本体のコマンド</td><td><span class="tag tag-hot">🔥 常用</span> <span class="tag tag-warn">⚠️ 代替不可</span></td></tr>
+        <tr><td><code>codex</code></td><td>OpenAI の CLI AI（CC との2人体制でレビュー等）</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+        <tr><td><code>agy</code> (Antigravity)</td><td>別の AI IDE（Superset の基盤）</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+        <tr><td><code>nlm</code> (NotebookLM CLI)</td><td>Google NotebookLM の CLI 操作ツール</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+        <tr><td><code>ollama</code></td><td>ローカル AI モデルの実行環境</td><td><span class="tag tag-sleep">💤 保有</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- クラウド系 -->
+  <div class="cat-header"><span>☁️</span> クラウド・インフラ系</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ツール</th><th>説明</th><th>頻度</th></tr></thead>
+      <tbody>
+        <tr><td><code>gcloud</code></td><td>Google Cloud CLI（GCP のほぼ全操作）</td><td><span class="tag tag-hot">🔥 常用</span> <span class="tag tag-warn">⚠️ 代替不可</span></td></tr>
+        <tr><td><code>gh</code> (GitHub CLI)</td><td>GitHub のリポジトリ・PR・Issue 操作</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+        <tr><td><code>firebase</code></td><td>Firebase CLI（Hosting/Functions デプロイ等）</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+        <tr><td><code>gws</code> (GWS CLI)</td><td>Gmail/Drive/Sheets 等 95 API の CLI</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+        <tr><td><code>wrangler</code></td><td>Cloudflare Workers の CLI</td><td><span class="tag tag-sleep">💤 保有</span></td></tr>
+        <tr><td><code>vercel</code></td><td>Vercel デプロイの CLI</td><td><span class="tag tag-sleep">💤 保有</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 開発系 -->
+  <div class="cat-header"><span>⚙️</span> 開発・ユーティリティ系</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ツール</th><th>説明</th><th>頻度</th></tr></thead>
+      <tbody>
+        <tr><td><code>git</code></td><td>バージョン管理の基本ツール</td><td><span class="tag tag-hot">🔥 常用</span> <span class="tag tag-warn">⚠️ 代替不可</span></td></tr>
+        <tr><td><code>node</code> / <code>bun</code></td><td>JavaScript/TypeScript の実行環境</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+        <tr><td><code>python3</code></td><td>Python の実行環境</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+        <tr><td><code>jq</code></td><td>JSON データの整形・抽出ツール</td><td><span class="tag tag-hot">🔥 常用</span></td></tr>
+        <tr><td><code>deno</code></td><td>モダンな JavaScript 実行環境</td><td><span class="tag tag-sleep">💤 保有</span></td></tr>
+        <tr><td><code>skillspector</code></td><td>Skill ファイルのセキュリティスキャンツール</td><td><span class="tag tag-sleep">💤 保有</span></td></tr>
+        <tr><td><code>mkcert</code></td><td>ローカル HTTPS 証明書の作成ツール</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+        <tr><td><code>curl</code></td><td>HTTP リクエストのコマンドラインツール</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== SECTION 7: 連携フロー ===== -->
+<section class="section" id="s7">
+  <h2 class="section-title"><span class="icon">🔄</span>Section 7: データ・連携の流れ</h2>
+
+  <h3 style="font-size:14px;color:var(--text);margin:14px 0 10px">基本フロー</h3>
+  <div class="flow-diagram">
+<span class="highlight">tomoさんの指示</span>
+      ↓
+  <span class="highlight">Claude Code（CC）</span>
+      ↓
+ ┌─────────────────────────┐
+ │ <span class="highlight">MCP 経由</span>  → Google Drive・Gmail・GitHub・GCP 等  │
+ │ <span class="highlight">CLI 経由</span>  → gcloud・gh・gws・firebase 等         │
+ │ <span class="highlight">Skill 参照</span> → 手順書に従って多段階で実行             │
+ └─────────────────────────┘
+      ↓
+  外部サービス / ローカルファイル / クラウドインフラ
+  </div>
+
+  <h3 style="font-size:14px;color:var(--text);margin:20px 0 10px">セッション間の記憶引き継ぎ（3層冗長）</h3>
+  <div class="info-box note">
+    <strong>💡 なぜ3層にするのか</strong>
+    1層（CLAUDE.md のみ）だと、更新漏れが起きた時に「前回何をしていたか」がわからなくなります。3層あると、1つが欠けても他の2つで補完できます（2026-06-26 の引き継ぎ漏れ事故を受けて設計）。
+  </div>
+  <div class="flow-diagram" style="margin-top:10px">
+<span class="highlight">セッション終了時:</span>
+  1. CLAUDE.md 更新（現在の状況・次のステップを上書き）
+  2. Linksee Memory に goal/caveat/learning を記録
+  3. engram に「次のあなたへ」エピソードを記憶
+
+<span class="highlight">次のセッション開始時</span>（「続きをお願いします」で起動）:
+  1. CLAUDE.md を読む → 現在の状況を把握
+  2. Linksee recall → goal・caveat・learning を復元
+  3. engram recall → エピソード記憶から前回の文脈を補完
+  </div>
+
+  <h3 style="font-size:14px;color:var(--text);margin:20px 0 10px">セキュリティ3層防御</h3>
+  <div class="flow-diagram">
+<span class="highlight">危険なコマンド実行前:</span>
+  pre-bash-secret-guard.sh（ブロック）
+      ↓ 通過したコマンドの実行
+<span class="highlight">コマンド実行後:</span>
+  post-bash-secret-detect.sh（出力チェック・警告）
+      ↓
+<span class="highlight">作業を通じて:</span>
+  safety-checklist.md（ルールとして常時意識）
+  </div>
+</section>
+
+<!-- ===== SECTION 8: 認証 ===== -->
+<section class="section" id="s8">
+  <h2 class="section-title"><span class="icon">🔐</span>Section 8: 認証・秘密情報の管理</h2>
+
+  <div class="info-box danger">
+    <strong>🚫 このドキュメントには秘密情報の値は一切記載していません</strong>
+    変数名・ラベル名のみ記載。実際の値は下記の各保管先にあります。
+  </div>
+
+  <h3 style="margin:20px 0 10px;font-size:14px;color:var(--text)">層1: KeyVault MCP（文字列の秘密情報）</h3>
+  <div class="info-box tip">
+    Mac ローカルアプリ「KeyVault」に格納。CC が直接値を見ることなく API を呼び出せます。
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>カテゴリ</th><th>登録サービス数</th><th>主な内容</th></tr></thead>
+      <tbody>
+        <tr><td>勤怠SaaS</td><td>1</td><td>クライアントID/シークレット × 5ペア</td></tr>
+        <tr><td>労務SaaS</td><td>4社分</td><td>サブドメイン + アクセストークン</td></tr>
+        <tr><td>ホスティングサービス</td><td>2環境</td><td>APIキー + サーバー名</td></tr>
+        <tr><td>脳内DBサービス</td><td>1</td><td>DB 接続情報 5社分</td></tr>
+        <tr><td>本番DB直接接続</td><td>2</td><td>DBパスワード（echo-server 経由でのみ利用）</td></tr>
+        <tr><td>各種ダッシュボード</td><td>3</td><td>セッションシークレット / OAuthクライアント等</td></tr>
+        <tr><td>検索API</td><td>1</td><td>APIキー</td></tr>
+        <tr><td>Box / Microsoft 365</td><td>各1</td><td>アクセストークン系</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin:20px 0 10px;font-size:14px;color:var(--text)">層2: Config/ フォルダ（ファイル形式の認証情報）</h3>
+  <p style="font-size:13px;color:var(--text2);margin-bottom:10px"><code>~/PTC_WORK/AI_Development/Config/</code> 配下に格納。</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>内容</th><th>格納先パターン</th></tr></thead>
+      <tbody>
+        <tr><td>GCP サービスアカウント鍵 JSON</td><td><code>Config/gcp/{プロジェクト名}/sa-key.json</code></td></tr>
+        <tr><td>OAuth クライアントシークレット JSON</td><td><code>Config/GWS-CLI/client_secrets.json</code></td></tr>
+        <tr><td>gws CLI 認証キャッシュ</td><td><code>Config/GWS-CLI/</code> 配下のバイナリファイル</td></tr>
+        <tr><td>SSH 鍵</td><td><code>Config/xserver-*/ssh_key</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin:20px 0 10px;font-size:14px;color:var(--text)">層3: .env（非秘密の設定値のみ）</h3>
+  <p style="font-size:13px;color:var(--text2)">各プロジェクトのリポジトリ直下の <code>.env</code> には<strong>秘密度の低い設定値のみ</strong>。スプレッドシートID・URL・ポート番号・DB名・リージョン等。</p>
+</section>
+
+<!-- ===== SECTION 9: 取り入れたい方へ ===== -->
+<section class="section" id="s9">
+  <h2 class="section-title"><span class="icon">🚀</span>Section 9: 取り入れたい方への参考</h2>
+
+  <div class="info-box tip">
+    <strong>💬 DIG部門メンバーへ</strong>
+    「全部入れないと意味がない」ではありません。1つだけ試すだけで十分です。
+  </div>
+
+  <h3 style="margin:20px 0 10px;font-size:15px;color:var(--text)">🔰 最初に入れるなら（3選）</h3>
+
+  <div class="rank-card">
+    <h4>📖 context7 MCP <span class="rank-badge">★☆☆ 導入簡単・無料</span></h4>
+    <p>「Claude Code が古い知識で回答する」を解決します。</p>
+    <ul>
+      <li><strong>効果</strong>: ライブラリの最新 API を正確に参照してコードを書いてくれる</li>
+      <li><strong>必要なもの</strong>: Claude Code のインストール + MCP 設定（5分）</li>
+      <li><strong>費用</strong>: 無料</li>
+    </ul>
+  </div>
+
+  <div class="rank-card">
+    <h4>📄 filesystem MCP <span class="rank-badge">★☆☆ 導入簡単・無料</span></h4>
+    <p>「ファイルの内容をいちいちコピペして CC に渡す」を解決します。</p>
+    <ul>
+      <li><strong>効果</strong>: CC が指定フォルダのファイルを直接読み書きできる</li>
+      <li><strong>必要なもの</strong>: MCP 設定（3分）+ 開放するフォルダの指定</li>
+      <li><strong>費用</strong>: 無料</li>
+    </ul>
+  </div>
+
+  <div class="rank-card">
+    <h4>🛡️ Hook 基本セット（セキュリティ3層防御） <span class="rank-badge">★★☆ 少し設定が必要</span></h4>
+    <p>APIキー等の意図せぬ漏洩を防ぐ安全装置です。</p>
+    <ul>
+      <li><strong>効果</strong>: 危険なコマンドを自動でブロック・警告</li>
+      <li><strong>必要なもの</strong>: <code>~/.claude/hooks/</code> へのスクリプト設置</li>
+      <li><strong>費用</strong>: 無料</li>
+    </ul>
+  </div>
+
+  <h3 style="margin:24px 0 10px;font-size:15px;color:var(--text)">💼 業務効率化なら（3選）</h3>
+
+  <div class="rank-card">
+    <h4>📊 gws CLI + Google Workspace Skill 群 <span class="rank-badge">★★☆</span></h4>
+    <p>Gmail・Drive・Sheets の手動操作をゼロにできます。</p>
+    <ul>
+      <li><strong>効果</strong>: 「スプレッドシートを作って部署全員に共有して」が会話で完結</li>
+      <li><strong>必要なもの</strong>: gws CLI インストール + OAuth 認証</li>
+    </ul>
+  </div>
+
+  <div class="rank-card">
+    <h4>🧠 engram + linksee MCP（セッション間記憶） <span class="rank-badge">★★☆</span></h4>
+    <p>毎回「前回の話を説明し直す」が不要になります。</p>
+    <ul>
+      <li><strong>効果</strong>: CC が前回のプロジェクト文脈を引き継いで作業開始</li>
+      <li><strong>必要なもの</strong>: engram サーバー・linksee MCP の設定</li>
+    </ul>
+  </div>
+
+  <div class="rank-card">
+    <h4>🔄 claude-code-handover Skill <span class="rank-badge">★★☆</span></h4>
+    <p>セッション終了時の引き継ぎ作業を自動化します。</p>
+    <ul>
+      <li><strong>効果</strong>: 「今日の作業ログ」を CC が自動でまとめてくれる</li>
+    </ul>
+  </div>
+
+  <h3 style="margin:24px 0 10px;font-size:15px;color:var(--text)">🔐 セキュリティ重視なら（3選）</h3>
+
+  <div class="rank-card">
+    <h4>🔑 KeyVault MCP <span class="rank-badge">★★★</span></h4>
+    <ul>
+      <li>APIキーを CC に渡さず API を呼び出す</li>
+      <li>「キーを貼り付けて」という操作が永遠に不要になる</li>
+    </ul>
+  </div>
+
+  <div class="rank-card">
+    <h4>🛡️ pre/post-bash Hook（3層防御） <span class="rank-badge">★★☆</span></h4>
+    <ul>
+      <li>秘密情報の誤った出力を自動でブロック・検知</li>
+      <li>過去に4件の事故から設計した防御機構</li>
+    </ul>
+  </div>
+
+  <div class="rank-card">
+    <h4>📋 safety-checklist.md の Rule 化 <span class="rank-badge">★☆☆</span></h4>
+    <ul>
+      <li>削除前確認・変更前説明を CC に習慣化</li>
+      <li>CLAUDE.md に1行追記するだけで機能する</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== SECTION 10: 振り返り ===== -->
+<section class="section" id="s10">
+  <h2 class="section-title"><span class="icon">📝</span>Section 10: 振り返り欄</h2>
+
+  <h3 style="font-size:14px;color:var(--text);margin:10px 0 14px">使用状況サマリ</h3>
+  <div class="summary-grid">
+    <div class="summary-item">
+      <div class="summary-label">🔥 常用（毎セッション）</div>
+      <div class="summary-count">~38件</div>
+      <div class="summary-example">MCP 10本・Hook 8本・Skill 20個<br>context7・filesystem・engram・linksee</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">✅ 定期（週/月に使う）</div>
+      <div class="summary-count">~91件</div>
+      <div class="summary-example">MCP 8本・Hook 3本・Skill 80個<br>firebase・GWS系・Recipe系</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-label">💤 保有のみ（未使用）</div>
+      <div class="summary-count">~64件</div>
+      <div class="summary-example">MCP 5本・Hook 1本・Skill 58個<br>Miro・ollama・bigquery-basics 等</div>
+    </div>
+  </div>
+
+  <h3 style="font-size:14px;color:var(--text);margin:20px 0 10px">今後の検討リスト（書き込み欄）</h3>
+  <ul class="checklist">
+    <li>最近使っていない MCP・Skill の整理・削除</li>
+    <li>Hook の追加が必要な操作はないか</li>
+    <li>新たに Skill 化すべき繰り返し作業はないか</li>
+    <li>KeyVault 未登録のサービスはないか</li>
+  </ul>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div><strong>Claude Code 開発環境リファレンス</strong> — 2026-06-29 時点のスナップショット</div>
+  <div style="margin-top:4px">情報源: Mac開発環境インベントリ + Claude ナレッジ共有マップ (Obsidian Vault)</div>
+  <div style="margin-top:4px;color:var(--text3)">社内プロジェクト名・顧客名・認証情報はすべてマスク済み</div>
+</footer>
+
+</div><!-- /main -->
+
+<!-- Back to Top -->
+<button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="トップに戻る">↑</button>
+
+</body>
+</html>
