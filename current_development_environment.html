@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Claude Code 開発環境リファレンス 2026-06-29</title>
 <style>
 /* ===== Reset & Base ===== */
@@ -76,10 +76,13 @@ a:hover { text-decoration: underline; }
   background: var(--bg2);
   border-bottom: 1px solid var(--border);
   padding: 10px 20px;
+  padding-left: max(20px, env(safe-area-inset-left));
+  padding-right: max(20px, env(safe-area-inset-right));
   display: flex;
   align-items: center;
   gap: 16px;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   white-space: nowrap;
   box-shadow: 0 1px 4px rgba(0,0,0,.06);
 }
@@ -104,7 +107,13 @@ a:hover { text-decoration: underline; }
 }
 
 /* ===== Main Layout ===== */
-.main { max-width: 960px; margin: 0 auto; padding: 0 16px 80px; }
+.main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 16px 80px;
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
+}
 
 /* overview セクションは画面幅いっぱいに表示（.main の制約を超える） */
 .section-fullwidth {
@@ -322,7 +331,7 @@ details summary:hover { background: var(--bg3); }
 }
 
 /* ===== Table ===== */
-.table-wrap { overflow-x: auto; margin: 10px 0; }
+.table-wrap { overflow-x: auto; margin: 10px 0; -webkit-overflow-scrolling: touch; }
 table {
   width: 100%;
   border-collapse: collapse;
@@ -473,6 +482,7 @@ code {
   line-height: 1.85;
   color: var(--text2);
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .flow-diagram .highlight { color: var(--accent); font-weight: 700; }
 .flow-diagram .arrow { color: var(--text3); }
@@ -580,14 +590,14 @@ code {
 /* ===== Back to Top ===== */
 .back-to-top {
   position: fixed;
-  bottom: 24px;
-  right: 20px;
+  bottom: max(24px, env(safe-area-inset-bottom, 0px));
+  right: max(20px, env(safe-area-inset-right, 0px));
   background: var(--accent);
   color: white;
   border: none;
   border-radius: 999px;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   font-size: 18px;
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(99, 102, 241, .4);
@@ -596,15 +606,79 @@ code {
   justify-content: center;
   z-index: 200;
   transition: background .2s, transform .2s;
+  /* タッチターゲットを44px以上に（Apple HIG） */
+  min-width: 44px;
+  min-height: 44px;
 }
 .back-to-top:hover { background: var(--accent2); transform: scale(1.1); }
 
 /* ===== Responsive ===== */
+
+/* --- 960px以下: section-fullwidth を .main 幅に戻す（iOS横スクロールバグ防止） --- */
+@media (max-width: 960px) {
+  .section-fullwidth {
+    width: auto;
+    position: static;
+    left: auto;
+    right: auto;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+  }
+}
+
+/* --- タブレット (768px以下) --- */
+@media (max-width: 768px) {
+  body { font-size: 16px; }
+
+  .hero { padding: 32px 22px 28px; }
+  .hero h1 { font-size: 20px; }
+  .hero-sub { font-size: 15px; margin-bottom: 20px; }
+
+  .stat-chip { font-size: 13px; padding: 5px 14px; }
+  .stat-chip .num { font-size: 17px; }
+
+  .section-title { font-size: 20px; }
+
+  .card-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  .card-grid-2 { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+
+  .stats-dashboard { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+  .summary-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+}
+
+/* --- スマートフォン (600px以下) --- */
 @media (max-width: 600px) {
-  .hero { padding: 30px 20px 28px; }
-  .stats-row { gap: 8px; }
+  body { font-size: 15px; }
+
+  .hero { padding: 24px 16px 22px; }
+  .hero h1 { font-size: 18px; }
+  .hero-sub { font-size: 14px; margin-bottom: 16px; }
+
+  .stats-row { gap: 6px; }
   .stat-chip { font-size: 11px; padding: 4px 12px; }
+  .stat-chip .num { font-size: 15px; }
+
   .card-grid, .card-grid-2 { grid-template-columns: 1fr; }
+
+  .section-title { font-size: 17px; }
+
+  table, th, td { font-size: 13px; }
+  th { padding: 8px 10px; }
+  td { padding: 8px 10px; }
+
+  .flow-diagram { font-size: 12px; padding: 14px; }
+
+  .top-nav a { font-size: 12px; padding: 3px 6px; }
+  .top-nav { gap: 10px; }
+
+  .stats-dashboard { grid-template-columns: repeat(3, 1fr); }
+  .summary-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .info-box { font-size: 14px; }
+  .details-body { font-size: 14px; }
+
+  .rank-card p, .rank-card ul { font-size: 14px; }
 }
 
 /* ===== Print ===== */
