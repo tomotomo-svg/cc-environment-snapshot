@@ -1176,16 +1176,20 @@ code {
       <div class="card-body">
         <div class="tag-row">
           <span class="tag tag-hot">🔥 常用</span>
-          <span class="tag tag-info">★★☆</span>
+          <span class="tag tag-info">★★☆ 中</span>
         </div>
         <details>
           <summary>活用例・メリット</summary>
           <div class="details-body">
-            <ul style="padding-left:16px">
+            <p><strong>活用例:</strong></p>
+            <ul style="padding-left:18px;margin-top:4px">
               <li>「先週作ったスプレッドシートを検索して」→ ファイルメタデータ取得</li>
               <li>「このファイルを部署全員に共有して」→ 権限設定まで CC が実行</li>
+              <li>フォルダ階層の一括整理・命名規約に沿った移動</li>
+              <li>削除予定ファイルの一覧化・ゴミ箱送り</li>
             </ul>
-            <p style="margin-top:8px"><strong>メリット:</strong> Drive 整理・共有設定の手動操作がゼロになる</p>
+            <p style="margin-top:10px"><strong>導入難易度:</strong> ★★☆（OAuth 認証の初回設定が必要・1回設定すれば永続）</p>
+            <p style="margin-top:6px"><strong>メリット:</strong> Drive 画面を開かずファイル操作が完結。整理・共有設定の手動クリックがゼロになる</p>
           </div>
         </details>
       </div>
@@ -1201,8 +1205,21 @@ code {
       <div class="card-body">
         <div class="tag-row">
           <span class="tag tag-regular">✅ 定期</span>
-          <span class="tag tag-info">★★☆</span>
+          <span class="tag tag-info">★★☆ 中</span>
         </div>
+        <details>
+          <summary>活用例・メリット</summary>
+          <div class="details-body">
+            <p><strong>活用例:</strong></p>
+            <ul style="padding-left:18px;margin-top:4px">
+              <li>「来週の予定一覧」→ 全カレンダー横断で表示</li>
+              <li>「来週木曜に1時間の打ち合わせを入れて」→ 空き時間検索＋予定登録</li>
+              <li>定例ミーティングの参加者一括更新</li>
+            </ul>
+            <p style="margin-top:10px"><strong>導入難易度:</strong> ★★☆（Gmail/Drive と同じ OAuth で同時取得可）</p>
+            <p style="margin-top:6px"><strong>メリット:</strong> 予定確認のためのアプリ切り替えが不要。空き時間検索が手早い</p>
+          </div>
+        </details>
       </div>
     </div>
   </div>
@@ -1249,7 +1266,21 @@ code {
         </div>
       </div>
       <div class="card-body">
-        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span></div>
+        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span> <span class="tag tag-info">★★☆ 中</span></div>
+        <details>
+          <summary>活用例・メリット</summary>
+          <div class="details-body">
+            <p><strong>活用例:</strong></p>
+            <ul style="padding-left:18px;margin-top:4px">
+              <li>Hosting へのデプロイ「このフォルダを Firebase に公開して」</li>
+              <li>Firestore セキュリティルールの取得・差分確認</li>
+              <li>Authentication ユーザー一覧・SDK 設定ファイル取得</li>
+              <li>Cloud Functions のデプロイ</li>
+            </ul>
+            <p style="margin-top:10px"><strong>導入難易度:</strong> ★★☆（firebase CLI のログイン後）</p>
+            <p style="margin-top:6px"><strong>メリット:</strong> Firebase コンソール画面と CLI の往復が不要</p>
+          </div>
+        </details>
       </div>
     </div>
     <div class="card">
@@ -1261,7 +1292,21 @@ code {
         </div>
       </div>
       <div class="card-body">
-        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span></div>
+        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span> <span class="tag tag-info">★★☆ 中</span></div>
+        <details>
+          <summary>活用例・メリット</summary>
+          <div class="details-body">
+            <p><strong>活用例:</strong></p>
+            <ul style="padding-left:18px;margin-top:4px">
+              <li>バケット作成・オブジェクト一覧・メタデータ取得</li>
+              <li>「安全アップロード」（衝突チェック付き）</li>
+              <li>IAM ポリシー閲覧・権限チェック</li>
+              <li>Storage Insights のクエリ実行</li>
+            </ul>
+            <p style="margin-top:10px"><strong>導入難易度:</strong> ★★☆（GCS API 有効化＋認証）</p>
+            <p style="margin-top:6px"><strong>メリット:</strong> GCS 周りの定型コマンドを覚えずに済む</p>
+          </div>
+        </details>
       </div>
     </div>
     <div class="card">
@@ -1273,7 +1318,21 @@ code {
         </div>
       </div>
       <div class="card-body">
-        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span></div>
+        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span> <span class="tag tag-info">★★☆ 中</span></div>
+        <details>
+          <summary>活用例・メリット</summary>
+          <div class="details-body">
+            <p><strong>活用例:</strong></p>
+            <ul style="padding-left:18px;margin-top:4px">
+              <li>「直近1時間のエラーログを抽出して」</li>
+              <li>特定サービスのトレース確認・レイテンシ解析</li>
+              <li>アラート一覧の取得・通知ポリシー確認</li>
+              <li>メトリクス（CPU/メモリ/QPS 等）の時系列取得</li>
+            </ul>
+            <p style="margin-top:10px"><strong>導入難易度:</strong> ★★☆（Cloud Logging/Monitoring API 有効化）</p>
+            <p style="margin-top:6px"><strong>メリット:</strong> 障害対応時にコンソールを開かなくてもログ・メトリクスが取れる</p>
+          </div>
+        </details>
       </div>
     </div>
     <div class="card">
@@ -1285,7 +1344,20 @@ code {
         </div>
       </div>
       <div class="card-body">
-        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span></div>
+        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span> <span class="tag tag-info">★☆☆ 易</span></div>
+        <details>
+          <summary>活用例・メリット</summary>
+          <div class="details-body">
+            <p><strong>活用例:</strong></p>
+            <ul style="padding-left:18px;margin-top:4px">
+              <li>「Cloud SQL の最新の接続パターンを調べて」</li>
+              <li>「IAM の最小権限の原則の推奨実装」</li>
+              <li>「Cloud Run のコールドスタート対策」</li>
+            </ul>
+            <p style="margin-top:10px"><strong>導入難易度:</strong> ★☆☆（API キー不要・MCP 設定のみ）</p>
+            <p style="margin-top:6px"><strong>メリット:</strong> CC が古い知識で誤回答するリスクが減る。最新の Google 公式情報で答える</p>
+          </div>
+        </details>
       </div>
     </div>
   </div>
@@ -1330,7 +1402,20 @@ code {
         </div>
       </div>
       <div class="card-body">
-        <div class="tag-row"><span class="tag tag-hot">🔥 常用</span></div>
+        <div class="tag-row"><span class="tag tag-hot">🔥 常用</span> <span class="tag tag-info">★☆☆ 易</span></div>
+        <details>
+          <summary>活用例・メリット</summary>
+          <div class="details-body">
+            <p><strong>活用例:</strong></p>
+            <ul style="padding-left:18px;margin-top:4px">
+              <li>「これコミットして」「ブランチ切って」が会話で完結</li>
+              <li>差分表示・ステータス確認・ログ閲覧</li>
+              <li>「変更したファイルだけステージして」等の細かい操作</li>
+            </ul>
+            <p style="margin-top:10px"><strong>導入難易度:</strong> ★☆☆（git 自体があれば即動く）</p>
+            <p style="margin-top:6px"><strong>メリット:</strong> git コマンドを覚えていなくても作業できる</p>
+          </div>
+        </details>
       </div>
     </div>
     <div class="card">
@@ -1342,7 +1427,21 @@ code {
         </div>
       </div>
       <div class="card-body">
-        <div class="tag-row"><span class="tag tag-hot">🔥 常用</span></div>
+        <div class="tag-row"><span class="tag tag-hot">🔥 常用</span> <span class="tag tag-info">★☆☆ 易</span></div>
+        <details>
+          <summary>活用例・メリット</summary>
+          <div class="details-body">
+            <p><strong>活用例:</strong></p>
+            <ul style="padding-left:18px;margin-top:4px">
+              <li>PR 作成・レビューコメント取得・マージ</li>
+              <li>Issue 一覧・作成・コメント追加</li>
+              <li>コードサーチ「全リポジトリで〇〇関数を探す」</li>
+              <li>リポジトリ作成・ブランチ操作</li>
+            </ul>
+            <p style="margin-top:10px"><strong>導入難易度:</strong> ★☆☆（gh CLI のログインのみ）</p>
+            <p style="margin-top:6px"><strong>メリット:</strong> GitHub Web UI とターミナルを往復しなくていい</p>
+          </div>
+        </details>
       </div>
     </div>
     <div class="card">
@@ -1379,7 +1478,20 @@ code {
         </div>
       </div>
       <div class="card-body">
-        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span></div>
+        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span> <span class="tag tag-info">★★☆ 中</span></div>
+        <details>
+          <summary>活用例・メリット</summary>
+          <div class="details-body">
+            <p><strong>活用例:</strong></p>
+            <ul style="padding-left:18px;margin-top:4px">
+              <li>「このフォルダを Cloud Run にデプロイして」→ ビルド～公開まで自動</li>
+              <li>サービスログ表示・直近エラー抽出</li>
+              <li>サービス一覧・トラフィック分割確認</li>
+            </ul>
+            <p style="margin-top:10px"><strong>導入難易度:</strong> ★★☆（GCP プロジェクト＋認証）</p>
+            <p style="margin-top:6px"><strong>メリット:</strong> 「デプロイ ⇄ ログ確認 ⇄ 修正」のサイクルが高速</p>
+          </div>
+        </details>
       </div>
     </div>
   </div>
@@ -1453,7 +1565,21 @@ code {
         </div>
       </div>
       <div class="card-body">
-        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span></div>
+        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span> <span class="tag tag-info">★★☆ 中</span></div>
+        <details>
+          <summary>活用例・メリット</summary>
+          <div class="details-body">
+            <p><strong>活用例:</strong></p>
+            <ul style="padding-left:18px;margin-top:4px">
+              <li>NotebookLM ノートブックの作成・PDF/URL ソース追加</li>
+              <li>「このノートブックに〇〇について質問して要約取得」</li>
+              <li>音声・動画・スライドの自動生成（artifact）</li>
+              <li>複数ノートブック横断のクロスクエリ</li>
+            </ul>
+            <p style="margin-top:10px"><strong>導入難易度:</strong> ★★☆（nlm CLI で初回認証）</p>
+            <p style="margin-top:6px"><strong>メリット:</strong> NotebookLM の UI 操作なしで資料投入・要約取得</p>
+          </div>
+        </details>
       </div>
     </div>
   </div>
@@ -1502,7 +1628,21 @@ code {
         </div>
       </div>
       <div class="card-body">
-        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span></div>
+        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span> <span class="tag tag-info">★★☆ 中</span></div>
+        <details>
+          <summary>活用例・メリット</summary>
+          <div class="details-body">
+            <p><strong>活用例:</strong></p>
+            <ul style="padding-left:18px;margin-top:4px">
+              <li>SQL の対話実行・テーブル一覧・スキーマ確認</li>
+              <li>マイグレーション作成・適用</li>
+              <li>Edge Functions のデプロイ・ログ取得</li>
+              <li>TypeScript 型の自動生成</li>
+            </ul>
+            <p style="margin-top:10px"><strong>導入難易度:</strong> ★★☆（Supabase プロジェクト＋アクセストークン）</p>
+            <p style="margin-top:6px"><strong>メリット:</strong> Supabase ダッシュボードを開かず開発作業が完結</p>
+          </div>
+        </details>
       </div>
     </div>
     <div class="card">
@@ -1514,7 +1654,21 @@ code {
         </div>
       </div>
       <div class="card-body">
-        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span></div>
+        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span> <span class="tag tag-info">★★☆ 中</span></div>
+        <details>
+          <summary>活用例・メリット</summary>
+          <div class="details-body">
+            <p><strong>活用例:</strong></p>
+            <ul style="padding-left:18px;margin-top:4px">
+              <li>Box ファイル検索・メタデータ編集・コメント追加</li>
+              <li>フォルダ内容一覧・コラボレータ管理</li>
+              <li>「特定キーワードでメタデータ検索」</li>
+              <li>新規ファイルのアップロード・既存ファイルの版更新</li>
+            </ul>
+            <p style="margin-top:10px"><strong>導入難易度:</strong> ★★☆（Box の OAuth 認証）</p>
+            <p style="margin-top:6px"><strong>メリット:</strong> Box の手動 UI 操作が大幅削減。整理・棚卸しが効率化</p>
+          </div>
+        </details>
       </div>
     </div>
     <div class="card">
@@ -1526,7 +1680,20 @@ code {
         </div>
       </div>
       <div class="card-body">
-        <div class="tag-row"><span class="tag tag-hot">🔥 常用</span></div>
+        <div class="tag-row"><span class="tag tag-hot">🔥 常用</span> <span class="tag tag-info">★★★ 高（自社開発前提）</span></div>
+        <details>
+          <summary>活用例・メリット</summary>
+          <div class="details-body">
+            <p><strong>活用例:</strong></p>
+            <ul style="padding-left:18px;margin-top:4px">
+              <li>「氏名から人物 ID 解決＋所属・直近異動歴」</li>
+              <li>顧客名から正規化済みコード・取引先グループ解決</li>
+              <li>期間マスタ・部門マスタの参照</li>
+            </ul>
+            <p style="margin-top:10px"><strong>導入難易度:</strong> ★★★（社内 API＋認証が必要・自社開発前提）</p>
+            <p style="margin-top:6px"><strong>メリット:</strong> CC が業務データの正本に直接アクセスでき、突合作業が高速化</p>
+          </div>
+        </details>
       </div>
     </div>
     <div class="card">
@@ -1538,7 +1705,20 @@ code {
         </div>
       </div>
       <div class="card-body">
-        <div class="tag-row"><span class="tag tag-sleep">💤 保有</span> <span class="tag tag-info">🆓 単体完結</span></div>
+        <div class="tag-row"><span class="tag tag-sleep">💤 保有</span> <span class="tag tag-info">🆓 単体完結</span> <span class="tag tag-info">★★☆ 中</span></div>
+        <details>
+          <summary>活用例・メリット</summary>
+          <div class="details-body">
+            <p><strong>活用例:</strong></p>
+            <ul style="padding-left:18px;margin-top:4px">
+              <li>新規ボード作成・付箋・図形・コメント追加</li>
+              <li>図表（diagram）の DSL ベース自動生成</li>
+              <li>レイアウトの自動配置・要素一括移動</li>
+            </ul>
+            <p style="margin-top:10px"><strong>導入難易度:</strong> ★★☆（Miro API キー）</p>
+            <p style="margin-top:6px"><strong>メリット:</strong> 整理図・組織図・フロー図を会話で生成。手動配置の手間が消える</p>
+          </div>
+        </details>
       </div>
     </div>
   </div>
@@ -1558,7 +1738,20 @@ code {
         </div>
       </div>
       <div class="card-body">
-        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span></div>
+        <div class="tag-row"><span class="tag tag-regular">✅ 定期</span> <span class="tag tag-info">★★☆ 中</span></div>
+        <details>
+          <summary>活用例・メリット</summary>
+          <div class="details-body">
+            <p><strong>活用例:</strong></p>
+            <ul style="padding-left:18px;margin-top:4px">
+              <li>新規 GAS プロジェクト作成・既存プロジェクトのクローン</li>
+              <li>ローカル編集 → push で GAS 側に反映</li>
+              <li>GAS 側コードを pull してローカル管理（git バージョン管理可能に）</li>
+            </ul>
+            <p style="margin-top:10px"><strong>導入難易度:</strong> ★★☆（clasp CLI のログイン）</p>
+            <p style="margin-top:6px"><strong>メリット:</strong> GAS の編集を VS Code 等のローカルエディタで行える。バージョン管理も可能</p>
+          </div>
+        </details>
       </div>
     </div>
   </div>
