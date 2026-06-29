@@ -633,11 +633,214 @@ code {
 <!-- ===== SYSTEM OVERVIEW (SVG Placeholder) ===== -->
 <section class="section" id="overview">
   <h2 class="section-title"><span class="icon">🗺️</span>システム全体図</h2>
-  <div class="svg-placeholder">
-    <div style="font-size:40px">🔄</div>
-    <p><strong>システム全体図（SVG）は Step 3.5 で追加予定</strong></p>
-    <p style="margin-top:6px;font-size:12px">Claude Code を中心とした放射状マップ（MCP・CLI・Skill・Hook の配置）</p>
+  <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Claude Code を中心に、MCP 23本を全て個別ノードで表示。周辺の Skill カテゴリ・主要 CLI も配置した詳細マップ。</p>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--card-shadow);overflow-x:auto">
+  <svg viewBox="0 0 1120 820" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Claude Code 開発環境 詳細ノードマップ" style="display:block;width:100%;height:auto;max-width:1120px;margin:0 auto;font-family:-apple-system,'Hiragino Sans','Yu Gothic UI',sans-serif">
+    <defs>
+      <radialGradient id="cc-grad-b" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#8b5cf6"/>
+        <stop offset="100%" stop-color="#6366f1"/>
+      </radialGradient>
+      <filter id="soft-shadow-b" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+        <feOffset dx="0" dy="2"/>
+        <feComponentTransfer><feFuncA type="linear" slope="0.25"/></feComponentTransfer>
+        <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <style>
+        .node-rect-b { rx: 8; ry: 8; }
+        .node-text-b { font-size: 10px; font-weight: 600; text-anchor: middle; dominant-baseline: middle; }
+        .cat-label-b { font-size: 11px; font-weight: 800; text-anchor: middle; }
+        .cat-count-b { font-size: 9px; font-weight: 600; text-anchor: middle; }
+        .link-b { stroke-width: 1.5; opacity: 0.4; }
+      </style>
+    </defs>
+
+    <!-- 中心から各カテゴリへの放射線 -->
+    <g stroke-dasharray="3,3">
+      <line x1="560" y1="350" x2="180" y2="120" class="link-b" stroke="#3b82f6"/>
+      <line x1="560" y1="350" x2="560" y2="120" class="link-b" stroke="#0ea5e9"/>
+      <line x1="560" y1="350" x2="940" y2="120" class="link-b" stroke="#ec4899"/>
+      <line x1="560" y1="350" x2="180" y2="580" class="link-b" stroke="#f59e0b"/>
+      <line x1="560" y1="350" x2="560" y2="600" class="link-b" stroke="#7c3aed"/>
+      <line x1="560" y1="350" x2="940" y2="580" class="link-b" stroke="#16a34a"/>
+    </g>
+
+    <!-- 左上: Google Workspace (3本) -->
+    <g>
+      <rect x="40" y="30" width="280" height="170" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+      <text x="180" y="52" class="cat-label-b" fill="#1e3a8a">📧 Google Workspace MCP</text>
+      <text x="180" y="68" class="cat-count-b" fill="#3b82f6">3 本</text>
+      <rect x="60" y="85" width="110" height="32" class="node-rect-b" fill="white" stroke="#3b82f6"/>
+      <text x="115" y="101" class="node-text-b" fill="#1e40af">Gmail</text>
+      <text x="115" y="112" class="node-text-b" fill="#6b7280" font-size="8">メール</text>
+      <rect x="190" y="85" width="110" height="32" class="node-rect-b" fill="white" stroke="#3b82f6"/>
+      <text x="245" y="101" class="node-text-b" fill="#1e40af">Drive</text>
+      <text x="245" y="112" class="node-text-b" fill="#6b7280" font-size="8">ファイル</text>
+      <rect x="125" y="135" width="110" height="32" class="node-rect-b" fill="white" stroke="#3b82f6"/>
+      <text x="180" y="151" class="node-text-b" fill="#1e40af">Calendar</text>
+      <text x="180" y="162" class="node-text-b" fill="#6b7280" font-size="8">予定</text>
+    </g>
+
+    <!-- 上中央: Google Cloud (5本) -->
+    <g>
+      <rect x="410" y="30" width="300" height="170" rx="12" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="1.5"/>
+      <text x="560" y="52" class="cat-label-b" fill="#0c4a6e">☁️ Google Cloud MCP</text>
+      <text x="560" y="68" class="cat-count-b" fill="#0ea5e9">5 本</text>
+      <rect x="425" y="85" width="130" height="32" class="node-rect-b" fill="white" stroke="#0ea5e9"/>
+      <text x="490" y="101" class="node-text-b" fill="#075985">gcloud-mcp</text>
+      <text x="490" y="112" class="node-text-b" fill="#6b7280" font-size="8">GCP全般</text>
+      <rect x="565" y="85" width="130" height="32" class="node-rect-b" fill="white" stroke="#0ea5e9"/>
+      <text x="630" y="101" class="node-text-b" fill="#075985">firebase</text>
+      <text x="630" y="112" class="node-text-b" fill="#6b7280" font-size="8">Firebase</text>
+      <rect x="425" y="125" width="90" height="32" class="node-rect-b" fill="white" stroke="#0ea5e9"/>
+      <text x="470" y="141" class="node-text-b" fill="#075985">storage</text>
+      <text x="470" y="152" class="node-text-b" fill="#6b7280" font-size="8">GCS</text>
+      <rect x="520" y="125" width="90" height="32" class="node-rect-b" fill="white" stroke="#0ea5e9"/>
+      <text x="565" y="141" class="node-text-b" fill="#075985">obs.</text>
+      <text x="565" y="152" class="node-text-b" fill="#6b7280" font-size="8">監視</text>
+      <rect x="615" y="125" width="90" height="32" class="node-rect-b" fill="white" stroke="#0ea5e9"/>
+      <text x="660" y="141" class="node-text-b" fill="#075985">devknowl.</text>
+      <text x="660" y="152" class="node-text-b" fill="#6b7280" font-size="8">公式Doc</text>
+      <rect x="495" y="165" width="130" height="28" class="node-rect-b" fill="white" stroke="#0ea5e9"/>
+      <text x="560" y="180" class="node-text-b" fill="#075985">cloudrun</text>
+    </g>
+
+    <!-- 右上: ナレッジ・記憶 (3本) -->
+    <g>
+      <rect x="800" y="30" width="280" height="170" rx="12" fill="#fdf2f8" stroke="#ec4899" stroke-width="1.5"/>
+      <text x="940" y="52" class="cat-label-b" fill="#831843">🧠 ナレッジ・記憶 MCP</text>
+      <text x="940" y="68" class="cat-count-b" fill="#ec4899">3 本</text>
+      <rect x="820" y="85" width="115" height="32" class="node-rect-b" fill="white" stroke="#ec4899"/>
+      <text x="877" y="101" class="node-text-b" fill="#9d174d">engram</text>
+      <text x="877" y="112" class="node-text-b" fill="#6b7280" font-size="8">永続記憶</text>
+      <rect x="945" y="85" width="115" height="32" class="node-rect-b" fill="white" stroke="#ec4899"/>
+      <text x="1002" y="101" class="node-text-b" fill="#9d174d">linksee</text>
+      <text x="1002" y="112" class="node-text-b" fill="#6b7280" font-size="8">構造化記憶</text>
+      <rect x="882" y="135" width="115" height="32" class="node-rect-b" fill="white" stroke="#ec4899"/>
+      <text x="939" y="151" class="node-text-b" fill="#9d174d">notebooklm</text>
+      <text x="939" y="162" class="node-text-b" fill="#6b7280" font-size="8">NotebookLM</text>
+    </g>
+
+    <!-- 中心: Claude Code -->
+    <g filter="url(#soft-shadow-b)">
+      <circle cx="560" cy="350" r="66" fill="url(#cc-grad-b)"/>
+      <text x="560" y="342" text-anchor="middle" font-size="15" font-weight="800" fill="white">Claude</text>
+      <text x="560" y="361" text-anchor="middle" font-size="15" font-weight="800" fill="white">Code</text>
+      <text x="560" y="377" text-anchor="middle" font-size="9" font-weight="600" fill="#ddd6fe">opus-4-7</text>
+    </g>
+    <g>
+      <text x="560" y="280" text-anchor="middle" font-size="9" font-weight="700" fill="#6b7280">⚡ Hook 12本（実行タイミング別）</text>
+      <text x="560" y="430" text-anchor="middle" font-size="9" font-weight="700" fill="#6b7280">📜 Rules 24本（共通ルール集）</text>
+    </g>
+
+    <!-- 左下: 開発支援 (5本) -->
+    <g>
+      <rect x="40" y="500" width="280" height="170" rx="12" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="180" y="522" class="cat-label-b" fill="#78350f">🛠️ 開発支援 MCP</text>
+      <text x="180" y="538" class="cat-count-b" fill="#f59e0b">5 本</text>
+      <rect x="55" y="555" width="125" height="30" class="node-rect-b" fill="white" stroke="#f59e0b"/>
+      <text x="117" y="570" class="node-text-b" fill="#92400e">filesystem</text>
+      <rect x="185" y="555" width="125" height="30" class="node-rect-b" fill="white" stroke="#f59e0b"/>
+      <text x="247" y="570" class="node-text-b" fill="#92400e">git</text>
+      <rect x="55" y="590" width="125" height="30" class="node-rect-b" fill="white" stroke="#f59e0b"/>
+      <text x="117" y="605" class="node-text-b" fill="#92400e">github</text>
+      <rect x="185" y="590" width="125" height="30" class="node-rect-b" fill="white" stroke="#f59e0b"/>
+      <text x="247" y="605" class="node-text-b" fill="#92400e">context7</text>
+      <rect x="120" y="625" width="125" height="30" class="node-rect-b" fill="white" stroke="#f59e0b"/>
+      <text x="182" y="640" class="node-text-b" fill="#92400e">cloudrun</text>
+    </g>
+
+    <!-- 下中央: Skill実行 (1本) -->
+    <g>
+      <rect x="450" y="540" width="220" height="110" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+      <text x="560" y="562" class="cat-label-b" fill="#3730a3">⚙️ Skill実行支援 MCP</text>
+      <text x="560" y="578" class="cat-count-b" fill="#7c3aed">1 本</text>
+      <rect x="490" y="595" width="140" height="36" class="node-rect-b" fill="white" stroke="#7c3aed"/>
+      <text x="560" y="611" class="node-text-b" fill="#5b21b6">clasp</text>
+      <text x="560" y="624" class="node-text-b" fill="#6b7280" font-size="8">Apps Script管理</text>
+    </g>
+
+    <!-- 右下: 業務連携 (6本) -->
+    <g>
+      <rect x="800" y="500" width="280" height="170" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="940" y="522" class="cat-label-b" fill="#14532d">💼 業務連携 MCP</text>
+      <text x="940" y="538" class="cat-count-b" fill="#16a34a">6 本</text>
+      <rect x="815" y="555" width="125" height="30" class="node-rect-b" fill="white" stroke="#16a34a"/>
+      <text x="877" y="570" class="node-text-b" fill="#166534">KeyVault ⚠️</text>
+      <rect x="945" y="555" width="125" height="30" class="node-rect-b" fill="white" stroke="#16a34a"/>
+      <text x="1007" y="570" class="node-text-b" fill="#166534">Supabase</text>
+      <rect x="815" y="590" width="125" height="30" class="node-rect-b" fill="white" stroke="#16a34a"/>
+      <text x="877" y="605" class="node-text-b" fill="#166534">Box</text>
+      <rect x="945" y="590" width="125" height="30" class="node-rect-b" fill="white" stroke="#16a34a"/>
+      <text x="1007" y="605" class="node-text-b" fill="#166534">組織マスタ</text>
+      <rect x="815" y="625" width="125" height="30" class="node-rect-b" fill="white" stroke="#16a34a"/>
+      <text x="877" y="640" class="node-text-b" fill="#166534">Miro</text>
+      <rect x="945" y="625" width="125" height="30" class="node-rect-b" fill="white" stroke="#16a34a"/>
+      <text x="1007" y="640" class="node-text-b" fill="#166534">MS365</text>
+    </g>
+
+    <!-- 最下部: Skill + CLI -->
+    <g>
+      <rect x="40" y="700" width="500" height="100" rx="12" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5"/>
+      <text x="290" y="722" class="cat-label-b" fill="#14532d">📋 Skill 158個（8カテゴリ）</text>
+      <g font-size="9" font-weight="600" text-anchor="middle">
+        <rect x="55" y="735" width="68" height="22" class="node-rect-b" fill="white" stroke="#22c55e"/>
+        <text x="89" y="750" fill="#15803d">社内 5</text>
+        <rect x="128" y="735" width="68" height="22" class="node-rect-b" fill="white" stroke="#22c55e"/>
+        <text x="162" y="750" fill="#15803d">CC運用 10</text>
+        <rect x="201" y="735" width="68" height="22" class="node-rect-b" fill="white" stroke="#22c55e"/>
+        <text x="235" y="750" fill="#15803d">GWS 44</text>
+        <rect x="274" y="735" width="68" height="22" class="node-rect-b" fill="white" stroke="#22c55e"/>
+        <text x="308" y="750" fill="#15803d">Recipe 41</text>
+        <rect x="347" y="735" width="68" height="22" class="node-rect-b" fill="white" stroke="#22c55e"/>
+        <text x="381" y="750" fill="#15803d">GCloud 32</text>
+        <rect x="55" y="765" width="68" height="22" class="node-rect-b" fill="white" stroke="#22c55e"/>
+        <text x="89" y="780" fill="#15803d">ナレッジ 10</text>
+        <rect x="128" y="765" width="68" height="22" class="node-rect-b" fill="white" stroke="#22c55e"/>
+        <text x="162" y="780" fill="#15803d">デザイン 3</text>
+        <rect x="201" y="765" width="68" height="22" class="node-rect-b" fill="white" stroke="#22c55e"/>
+        <text x="235" y="780" fill="#15803d">業務API 4</text>
+      </g>
+
+      <rect x="560" y="700" width="520" height="100" rx="12" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+      <text x="820" y="722" class="cat-label-b" fill="#7c2d12">🛠️ CLI 26本+(主要)</text>
+      <g font-size="9" font-weight="600" text-anchor="middle">
+        <rect x="575" y="735" width="58" height="22" class="node-rect-b" fill="white" stroke="#ea580c"/>
+        <text x="604" y="750" fill="#9a3412">brew</text>
+        <rect x="638" y="735" width="58" height="22" class="node-rect-b" fill="white" stroke="#ea580c"/>
+        <text x="667" y="750" fill="#9a3412">npm</text>
+        <rect x="701" y="735" width="58" height="22" class="node-rect-b" fill="white" stroke="#ea580c"/>
+        <text x="730" y="750" fill="#9a3412">pip</text>
+        <rect x="764" y="735" width="58" height="22" class="node-rect-b" fill="white" stroke="#ea580c"/>
+        <text x="793" y="750" fill="#9a3412">claude ⚠️</text>
+        <rect x="827" y="735" width="58" height="22" class="node-rect-b" fill="white" stroke="#ea580c"/>
+        <text x="856" y="750" fill="#9a3412">codex</text>
+        <rect x="890" y="735" width="58" height="22" class="node-rect-b" fill="white" stroke="#ea580c"/>
+        <text x="919" y="750" fill="#9a3412">agy</text>
+        <rect x="575" y="765" width="58" height="22" class="node-rect-b" fill="white" stroke="#ea580c"/>
+        <text x="604" y="780" fill="#9a3412">gcloud ⚠️</text>
+        <rect x="638" y="765" width="58" height="22" class="node-rect-b" fill="white" stroke="#ea580c"/>
+        <text x="667" y="780" fill="#9a3412">gh</text>
+        <rect x="701" y="765" width="58" height="22" class="node-rect-b" fill="white" stroke="#ea580c"/>
+        <text x="730" y="780" fill="#9a3412">firebase</text>
+        <rect x="764" y="765" width="58" height="22" class="node-rect-b" fill="white" stroke="#ea580c"/>
+        <text x="793" y="780" fill="#9a3412">gws</text>
+        <rect x="827" y="765" width="58" height="22" class="node-rect-b" fill="white" stroke="#ea580c"/>
+        <text x="856" y="780" fill="#9a3412">git ⚠️</text>
+        <rect x="890" y="765" width="58" height="22" class="node-rect-b" fill="white" stroke="#ea580c"/>
+        <text x="919" y="780" fill="#9a3412">jq</text>
+      </g>
+    </g>
+
+    <!-- 凡例 -->
+    <g transform="translate(380,460)" font-size="9" font-family="-apple-system,sans-serif">
+      <rect x="0" y="0" width="360" height="22" rx="4" fill="white" stroke="#cbd5e1"/>
+      <text x="10" y="14" font-weight="700" fill="#4b5563">⚠️ 代替不可（これがないと困る）　　破線 = 中心への接続</text>
+    </g>
+  </svg>
   </div>
+  <p style="font-size:11px;color:var(--text3);text-align:center;margin-top:8px">▲ MCP 23本を6カテゴリで全展開（個別ノード）+ Skill 8カテゴリ + CLI 主要 12本。⚠️ = これがないと困る代替不可ツール</p>
 </section>
 
 <!-- ===== SECTION 1: CCとは ===== -->
