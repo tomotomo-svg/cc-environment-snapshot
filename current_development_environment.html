@@ -59,8 +59,8 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: -apple-system, "Hiragino Sans", "Yu Gothic UI", "Noto Sans JP", sans-serif;
-  font-size: 15px;
-  line-height: 1.7;
+  font-size: 17px;
+  line-height: 1.75;
   color: var(--text);
   background: var(--bg);
 }
@@ -84,14 +84,14 @@ a:hover { text-decoration: underline; }
   box-shadow: 0 1px 4px rgba(0,0,0,.06);
 }
 .top-nav .brand {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--accent);
   flex-shrink: 0;
   margin-right: 4px;
 }
 .top-nav a {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text2);
   padding: 4px 8px;
   border-radius: var(--radius-sm);
@@ -149,7 +149,7 @@ a:hover { text-decoration: underline; }
   background: rgba(255,255,255,.04);
 }
 .hero-kicker {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -157,16 +157,17 @@ a:hover { text-decoration: underline; }
   margin-bottom: 8px;
 }
 .hero h1 {
-  font-size: clamp(20px, 4vw, 28px);
+  font-size: clamp(24px, 4vw, 32px);
   font-weight: 800;
   line-height: 1.3;
   margin-bottom: 12px;
 }
 .hero-sub {
-  font-size: 14px;
-  opacity: .85;
+  font-size: 16px;
+  opacity: .9;
   margin-bottom: 28px;
-  max-width: 520px;
+  max-width: 580px;
+  line-height: 1.7;
 }
 .stats-row {
   display: flex;
@@ -178,31 +179,31 @@ a:hover { text-decoration: underline; }
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255,255,255,.2);
   border-radius: 999px;
-  padding: 6px 16px;
+  padding: 7px 18px;
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
 }
-.stat-chip .num { font-size: 18px; font-weight: 800; }
+.stat-chip .num { font-size: 20px; font-weight: 800; }
 
 /* ===== Section Titles ===== */
 .section {
   margin-top: 40px;
 }
 .section-title {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 800;
   color: var(--text);
-  margin-bottom: 16px;
-  padding-bottom: 10px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
   border-bottom: 2px solid var(--border);
   display: flex;
   align-items: center;
   gap: 10px;
 }
-.section-title .icon { font-size: 22px; }
+.section-title .icon { font-size: 26px; }
 
 /* ===== Card Grid ===== */
 .card-grid {
@@ -236,27 +237,28 @@ a:hover { text-decoration: underline; }
   gap: 10px;
 }
 .card-icon {
-  font-size: 22px;
+  font-size: 24px;
   flex-shrink: 0;
   margin-top: 1px;
 }
 .card-title {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text);
-  line-height: 1.3;
+  line-height: 1.4;
 }
 .card-sub {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text2);
-  margin-top: 2px;
-  line-height: 1.4;
+  margin-top: 3px;
+  line-height: 1.5;
 }
 
 .card-body {
   padding: 0 16px 14px;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text2);
+  line-height: 1.65;
 }
 
 /* ===== Tags ===== */
@@ -267,13 +269,13 @@ a:hover { text-decoration: underline; }
   margin-top: 8px;
 }
 .tag {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
-  padding: 2px 8px;
+  padding: 3px 10px;
   border-radius: 999px;
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
 }
 .tag-hot { background: var(--tag-hot-bg); color: var(--tag-hot-text); }
 .tag-regular { background: var(--tag-regular-bg); color: var(--tag-regular-text); }
@@ -291,8 +293,8 @@ details {
   border-top: 1px solid var(--border);
 }
 details summary {
-  padding: 8px 16px;
-  font-size: 12px;
+  padding: 10px 18px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--accent);
   cursor: pointer;
@@ -306,17 +308,17 @@ details summary {
 details summary::-webkit-details-marker { display: none; }
 details summary::before {
   content: '▶';
-  font-size: 10px;
+  font-size: 11px;
   transition: transform .2s;
   color: var(--text3);
 }
 details[open] summary::before { transform: rotate(90deg); }
 details summary:hover { background: var(--bg3); }
 .details-body {
-  padding: 12px 16px 14px;
-  font-size: 13px;
+  padding: 14px 18px 16px;
+  font-size: 15px;
   color: var(--text2);
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
 /* ===== Table ===== */
@@ -324,41 +326,42 @@ details summary:hover { background: var(--bg3); }
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 15px;
 }
 th {
   background: var(--bg3);
   color: var(--text2);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .05em;
-  padding: 8px 12px;
+  padding: 10px 14px;
   text-align: left;
   border-bottom: 1px solid var(--border);
 }
 td {
-  padding: 8px 12px;
+  padding: 10px 14px;
   border-bottom: 1px solid var(--border);
   vertical-align: top;
+  line-height: 1.65;
 }
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: var(--bg3); }
 
 /* ===== Info Boxes ===== */
 .info-box {
-  padding: 12px 16px;
+  padding: 14px 18px;
   border-radius: var(--radius-sm);
-  margin: 12px 0;
-  font-size: 13px;
-  line-height: 1.6;
-  border-left: 3px solid;
+  margin: 14px 0;
+  font-size: 15px;
+  line-height: 1.75;
+  border-left: 4px solid;
 }
 .info-box.note { background: #eff6ff; border-color: #3b82f6; color: #1e3a6e; }
 .info-box.tip { background: #f0fdf4; border-color: #22c55e; color: #14532d; }
 .info-box.warn { background: #fffbeb; border-color: #f59e0b; color: #78350f; }
 .info-box.danger { background: #fff1f2; border-color: #ef4444; color: #7f1d1d; }
-.info-box strong { display: block; margin-bottom: 4px; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+.info-box strong { display: block; margin-bottom: 6px; font-size: 14px; text-transform: uppercase; letter-spacing: .05em; }
 @media (prefers-color-scheme: dark) {
   .info-box.note { background: #0c1a3b; border-color: #3b82f6; color: #93c5fd; }
   .info-box.tip { background: #052e16; border-color: #22c55e; color: #86efac; }
@@ -371,21 +374,21 @@ tr:hover td { background: var(--bg3); }
   background: var(--bg3);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  margin: 14px 0 10px;
+  padding: 12px 16px;
+  margin: 18px 0 12px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 14px;
+  gap: 10px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--text);
 }
 .cat-header .count {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   background: var(--accent);
   color: white;
-  padding: 1px 7px;
+  padding: 2px 10px;
   border-radius: 999px;
   margin-left: auto;
 }
@@ -406,22 +409,23 @@ tr:hover td { background: var(--bg3); }
   box-shadow: var(--card-shadow);
 }
 .stat-card .big-num {
-  font-size: 32px;
+  font-size: 38px;
   font-weight: 900;
   color: var(--accent);
   line-height: 1.1;
   display: block;
 }
 .stat-card .stat-label {
-  font-size: 12px;
-  color: var(--text3);
-  margin-top: 4px;
-}
-.stat-card .stat-desc {
-  font-size: 11px;
+  font-size: 14px;
   color: var(--text3);
   margin-top: 6px;
-  line-height: 1.4;
+  font-weight: 600;
+}
+.stat-card .stat-desc {
+  font-size: 13px;
+  color: var(--text3);
+  margin-top: 8px;
+  line-height: 1.55;
 }
 
 /* ===== SVG Placeholder ===== */
@@ -439,22 +443,22 @@ tr:hover td { background: var(--bg3); }
 /* ===== Code Block ===== */
 pre, code {
   font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
-  font-size: 12px;
+  font-size: 13px;
 }
 pre {
   background: var(--bg3);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  padding: 12px 14px;
+  padding: 14px 16px;
   overflow-x: auto;
-  line-height: 1.5;
-  margin: 8px 0;
+  line-height: 1.55;
+  margin: 10px 0;
 }
 code {
   background: var(--bg3);
-  padding: 1px 5px;
+  padding: 2px 6px;
   border-radius: 3px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 /* ===== Flow Diagram ===== */
@@ -462,11 +466,11 @@ code {
   background: var(--bg3);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 20px;
-  margin: 12px 0;
+  padding: 22px;
+  margin: 14px 0;
   font-family: "SF Mono", "Fira Code", monospace;
-  font-size: 12px;
-  line-height: 1.8;
+  font-size: 14px;
+  line-height: 1.85;
   color: var(--text2);
   overflow-x: auto;
 }
@@ -479,9 +483,9 @@ code {
   margin: 10px 0;
 }
 .checklist li {
-  padding: 6px 0 6px 24px;
+  padding: 8px 0 8px 28px;
   position: relative;
-  font-size: 13px;
+  font-size: 15px;
   border-bottom: 1px solid var(--border);
 }
 .checklist li:last-child { border-bottom: none; }
@@ -503,28 +507,29 @@ code {
   box-shadow: var(--card-shadow);
 }
 .rank-card h4 {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 .rank-badge {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
-  padding: 2px 8px;
+  padding: 3px 10px;
   border-radius: 999px;
   background: var(--accent);
   color: white;
 }
-.rank-card p { font-size: 13px; color: var(--text2); margin-bottom: 6px; }
+.rank-card p { font-size: 15px; color: var(--text2); margin-bottom: 8px; line-height: 1.65; }
 .rank-card ul {
-  padding-left: 16px;
-  font-size: 13px;
+  padding-left: 18px;
+  font-size: 15px;
   color: var(--text2);
+  line-height: 1.7;
 }
-.rank-card li { margin-bottom: 3px; }
+.rank-card li { margin-bottom: 5px; }
 
 /* ===== Summary Table (Section 10) ===== */
 .summary-grid {
@@ -541,34 +546,35 @@ code {
   box-shadow: var(--card-shadow);
 }
 .summary-item .summary-label {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text3);
   text-transform: uppercase;
   letter-spacing: .06em;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  font-weight: 600;
 }
 .summary-item .summary-count {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 800;
   color: var(--text);
   line-height: 1;
 }
 .summary-item .summary-example {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text3);
-  margin-top: 6px;
-  line-height: 1.4;
+  margin-top: 8px;
+  line-height: 1.55;
 }
 
 /* ===== Footer ===== */
 .footer {
   margin-top: 60px;
-  padding: 24px;
+  padding: 28px;
   border-top: 1px solid var(--border);
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text3);
-  line-height: 1.8;
+  line-height: 1.85;
 }
 
 /* ===== Back to Top ===== */
@@ -650,7 +656,7 @@ code {
 <section class="section section-fullwidth" id="overview">
  <div class="section-fullwidth-inner">
   <h2 class="section-title"><span class="icon">🗺️</span>システム全体図</h2>
-  <p style="font-size:14px;color:var(--text2);margin-bottom:12px;line-height:1.7">Claude Code を中心に、MCP 23本を全て個別ノードで表示。各 MCP の役割を1行で添え、周辺に Skill カテゴリ・主要 CLI も配置した詳細マップ。</p>
+  <p style="font-size:16px;color:var(--text2);margin-bottom:14px;line-height:1.75">Claude Code を中心に、MCP 23本を全て個別ノードで表示。各 MCP の役割を1行で添え、周辺に Skill カテゴリ・主要 CLI も配置した詳細マップ。</p>
   <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--card-shadow);overflow-x:auto">
   <svg viewBox="0 0 1320 1100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Claude Code 開発環境 詳細ノードマップ" style="display:block;width:100%;height:auto;max-width:1600px;margin:0 auto;font-family:-apple-system,'Hiragino Sans','Yu Gothic UI',sans-serif">
     <defs>
@@ -918,7 +924,7 @@ code {
     </g>
   </svg>
   </div>
-  <p style="font-size:12px;color:var(--text3);text-align:center;margin-top:8px">▲ MCP 23本を6カテゴリで全展開(個別ノード)+ Skill 8カテゴリ + CLI 主要 12本。⚠️ = これがないと困る代替不可ツール</p>
+  <p style="font-size:14px;color:var(--text3);text-align:center;margin-top:10px">▲ MCP 23本を6カテゴリで全展開(個別ノード)+ Skill 8カテゴリ + CLI 主要 12本。⚠️ = これがないと困る代替不可ツール</p>
  </div>
 </section>
 
@@ -995,7 +1001,7 @@ code {
 <section class="section" id="s3">
   <h2 class="section-title"><span class="icon">🖥️</span>Section 3: 中心：Claude Code 本体</h2>
 
-  <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Claude Code は <code>~/.claude/</code> 配下の設定ファイル群で動作をカスタマイズします。</p>
+  <p style="font-size:16px;color:var(--text2);margin-bottom:16px">Claude Code は <code>~/.claude/</code> 配下の設定ファイル群で動作をカスタマイズします。</p>
 
   <!-- フォルダ構成 -->
   <div class="card" style="margin-bottom:14px">
@@ -1029,7 +1035,7 @@ code {
       </div>
     </div>
     <div class="card-body">
-      <ul style="font-size:13px;padding-left:16px;line-height:1.8">
+      <ul style="font-size:16px;padding-left:18px;line-height:1.85">
         <li>常に日本語で回答する / 非エンジニア向けの説明スタイル</li>
         <li>秘密情報の扱い方 / 失敗学習の参照方法</li>
         <li>自動化ポリシー（いつCCが自動でやるか・ユーザーに聞くか）</li>
@@ -1062,7 +1068,7 @@ code {
         <tr><td><code>youtube-knowledge-flow.md</code></td><td>YouTube→Vault 取込みフロー</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
         <tr><td><code>slide-presentation.md</code></td><td>プレゼン資料自動作成ルール</td><td><span class="tag tag-sleep">💤 保有</span></td></tr>
         <tr><td><code>skill-checker-rules.md</code></td><td>GitHub Skill セキュリティスキャン</td><td><span class="tag tag-sleep">💤 保有</span></td></tr>
-        <tr><td colspan="3" style="font-size:11px;color:var(--text3);padding:6px 12px">他9ファイル省略（common-paths.md / google-chat-automation.md / sort-clippings.md 等）</td></tr>
+        <tr><td colspan="3" style="font-size:13px;color:var(--text3);padding:6px 12px">他9ファイル省略（common-paths.md / google-chat-automation.md / sort-clippings.md 等）</td></tr>
       </tbody>
     </table>
   </div>
@@ -1624,7 +1630,7 @@ code {
             <tr><td><code>gws-gmail-filter</code></td><td>Gmail フィルタ・ラベルの一括設定</td><td><span class="tag tag-sleep">💤 保有</span></td></tr>
             <tr><td><code>gws-admin-directory</code></td><td>GWS 組織のユーザー一覧・部署構成の参照</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
             <tr><td><code>gws-chat-send</code></td><td>Google Chat への自動配信設定</td><td><span class="tag tag-regular">✅ 定期</span></td></tr>
-            <tr><td colspan="3" style="font-size:11px;color:var(--text3)">残り 39個も同様に「gws コマンドの定型手順」を Skill 化したもの</td></tr>
+            <tr><td colspan="3" style="font-size:13px;color:var(--text3)">残り 39個も同様に「gws コマンドの定型手順」を Skill 化したもの</td></tr>
           </tbody>
         </table>
       </div>
@@ -1783,7 +1789,7 @@ code {
 <section class="section" id="s7">
   <h2 class="section-title"><span class="icon">🔄</span>Section 7: データ・連携の流れ</h2>
 
-  <h3 style="font-size:14px;color:var(--text);margin:14px 0 10px">基本フロー</h3>
+  <h3 style="font-size:18px;color:var(--text);margin:14px 0 10px">基本フロー</h3>
   <div class="flow-diagram">
 <span class="highlight">tomoさんの指示</span>
       ↓
@@ -1798,7 +1804,7 @@ code {
   外部サービス / ローカルファイル / クラウドインフラ
   </div>
 
-  <h3 style="font-size:14px;color:var(--text);margin:20px 0 10px">セッション間の記憶引き継ぎ（3層冗長）</h3>
+  <h3 style="font-size:18px;color:var(--text);margin:20px 0 10px">セッション間の記憶引き継ぎ（3層冗長）</h3>
   <div class="info-box note">
     <strong>💡 なぜ3層にするのか</strong>
     1層（CLAUDE.md のみ）だと、更新漏れが起きた時に「前回何をしていたか」がわからなくなります。3層あると、1つが欠けても他の2つで補完できます（2026-06-26 の引き継ぎ漏れ事故を受けて設計）。
@@ -1815,7 +1821,7 @@ code {
   3. engram recall → エピソード記憶から前回の文脈を補完
   </div>
 
-  <h3 style="font-size:14px;color:var(--text);margin:20px 0 10px">セキュリティ3層防御</h3>
+  <h3 style="font-size:18px;color:var(--text);margin:20px 0 10px">セキュリティ3層防御</h3>
   <div class="flow-diagram">
 <span class="highlight">危険なコマンド実行前:</span>
   pre-bash-secret-guard.sh（ブロック）
@@ -1837,7 +1843,7 @@ code {
     変数名・ラベル名のみ記載。実際の値は下記の各保管先にあります。
   </div>
 
-  <h3 style="margin:20px 0 10px;font-size:14px;color:var(--text)">層1: KeyVault MCP（文字列の秘密情報）</h3>
+  <h3 style="margin:20px 0 10px;font-size:18px;color:var(--text)">層1: KeyVault MCP（文字列の秘密情報）</h3>
   <div class="info-box tip">
     Mac ローカルアプリ「KeyVault」に格納。CC が直接値を見ることなく API を呼び出せます。
   </div>
@@ -1857,8 +1863,8 @@ code {
     </table>
   </div>
 
-  <h3 style="margin:20px 0 10px;font-size:14px;color:var(--text)">層2: Config/ フォルダ（ファイル形式の認証情報）</h3>
-  <p style="font-size:13px;color:var(--text2);margin-bottom:10px"><code>~/PTC_WORK/AI_Development/Config/</code> 配下に格納。</p>
+  <h3 style="margin:20px 0 10px;font-size:18px;color:var(--text)">層2: Config/ フォルダ（ファイル形式の認証情報）</h3>
+  <p style="font-size:16px;color:var(--text2);margin-bottom:10px"><code>~/PTC_WORK/AI_Development/Config/</code> 配下に格納。</p>
   <div class="table-wrap">
     <table>
       <thead><tr><th>内容</th><th>格納先パターン</th></tr></thead>
@@ -1871,8 +1877,8 @@ code {
     </table>
   </div>
 
-  <h3 style="margin:20px 0 10px;font-size:14px;color:var(--text)">層3: .env（非秘密の設定値のみ）</h3>
-  <p style="font-size:13px;color:var(--text2)">各プロジェクトのリポジトリ直下の <code>.env</code> には<strong>秘密度の低い設定値のみ</strong>。スプレッドシートID・URL・ポート番号・DB名・リージョン等。</p>
+  <h3 style="margin:20px 0 10px;font-size:18px;color:var(--text)">層3: .env（非秘密の設定値のみ）</h3>
+  <p style="font-size:16px;color:var(--text2)">各プロジェクトのリポジトリ直下の <code>.env</code> には<strong>秘密度の低い設定値のみ</strong>。スプレッドシートID・URL・ポート番号・DB名・リージョン等。</p>
 </section>
 
 <!-- ===== SECTION 9: 取り入れたい方へ ===== -->
@@ -1975,7 +1981,7 @@ code {
 <section class="section" id="s10">
   <h2 class="section-title"><span class="icon">📝</span>Section 10: 振り返り欄</h2>
 
-  <h3 style="font-size:14px;color:var(--text);margin:10px 0 14px">使用状況サマリ</h3>
+  <h3 style="font-size:18px;color:var(--text);margin:10px 0 14px">使用状況サマリ</h3>
   <div class="summary-grid">
     <div class="summary-item">
       <div class="summary-label">🔥 常用（毎セッション）</div>
@@ -1994,7 +2000,7 @@ code {
     </div>
   </div>
 
-  <h3 style="font-size:14px;color:var(--text);margin:20px 0 10px">今後の検討リスト（書き込み欄）</h3>
+  <h3 style="font-size:18px;color:var(--text);margin:20px 0 10px">今後の検討リスト（書き込み欄）</h3>
   <ul class="checklist">
     <li>最近使っていない MCP・Skill の整理・削除</li>
     <li>Hook の追加が必要な操作はないか</li>
