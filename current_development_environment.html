@@ -106,6 +106,22 @@ a:hover { text-decoration: underline; }
 /* ===== Main Layout ===== */
 .main { max-width: 960px; margin: 0 auto; padding: 0 16px 80px; }
 
+/* overview セクションは画面幅いっぱいに表示（.main の制約を超える） */
+.section-fullwidth {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+.section-fullwidth-inner {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
 /* ===== Hero ===== */
 .hero {
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 50%, var(--accent3) 100%);
@@ -631,11 +647,12 @@ code {
 </section>
 
 <!-- ===== SYSTEM OVERVIEW (SVG Placeholder) ===== -->
-<section class="section" id="overview">
+<section class="section section-fullwidth" id="overview">
+ <div class="section-fullwidth-inner">
   <h2 class="section-title"><span class="icon">🗺️</span>システム全体図</h2>
   <p style="font-size:14px;color:var(--text2);margin-bottom:12px;line-height:1.7">Claude Code を中心に、MCP 23本を全て個別ノードで表示。各 MCP の役割を1行で添え、周辺に Skill カテゴリ・主要 CLI も配置した詳細マップ。</p>
-  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--card-shadow);overflow-x:auto">
-  <svg viewBox="0 0 1320 1100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Claude Code 開発環境 詳細ノードマップ" style="display:block;width:100%;height:auto;max-width:1320px;margin:0 auto;font-family:-apple-system,'Hiragino Sans','Yu Gothic UI',sans-serif">
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--card-shadow);overflow-x:auto">
+  <svg viewBox="0 0 1320 1100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Claude Code 開発環境 詳細ノードマップ" style="display:block;width:100%;height:auto;max-width:1600px;margin:0 auto;font-family:-apple-system,'Hiragino Sans','Yu Gothic UI',sans-serif">
     <defs>
       <radialGradient id="cc-grad-b" cx="50%" cy="50%" r="50%">
         <stop offset="0%" stop-color="#8b5cf6"/>
@@ -649,12 +666,12 @@ code {
       </filter>
       <style>
         .node-rect-b { rx: 8; ry: 8; }
-        .cat-label-b { font-size: 16px; font-weight: 800; text-anchor: middle; }
-        .cat-count-b { font-size: 12px; font-weight: 700; text-anchor: middle; }
-        .cat-desc-b { font-size: 11px; font-weight: 500; text-anchor: middle; }
-        .node-name-b { font-size: 14px; font-weight: 700; text-anchor: middle; }
-        .node-desc-b { font-size: 10.5px; font-weight: 500; text-anchor: middle; }
-        .link-b { stroke-width: 2; opacity: 0.45; }
+        .cat-label-b { font-size: 20px; font-weight: 800; text-anchor: middle; }
+        .cat-count-b { font-size: 15px; font-weight: 700; text-anchor: middle; }
+        .cat-desc-b { font-size: 13px; font-weight: 500; text-anchor: middle; }
+        .node-name-b { font-size: 17px; font-weight: 700; text-anchor: middle; }
+        .node-desc-b { font-size: 13px; font-weight: 500; text-anchor: middle; }
+        .link-b { stroke-width: 2.5; opacity: 0.45; }
       </style>
     </defs>
 
@@ -740,15 +757,15 @@ code {
 
     <!-- ===== 中心: Claude Code ===== -->
     <g filter="url(#soft-shadow-b)">
-      <circle cx="660" cy="490" r="85" fill="url(#cc-grad-b)"/>
-      <text x="660" y="482" text-anchor="middle" font-size="20" font-weight="800" fill="white">Claude</text>
-      <text x="660" y="508" text-anchor="middle" font-size="20" font-weight="800" fill="white">Code</text>
-      <text x="660" y="530" text-anchor="middle" font-size="11" font-weight="600" fill="#ddd6fe">opus-4-7</text>
+      <circle cx="660" cy="490" r="95" fill="url(#cc-grad-b)"/>
+      <text x="660" y="480" text-anchor="middle" font-size="24" font-weight="800" fill="white">Claude</text>
+      <text x="660" y="510" text-anchor="middle" font-size="24" font-weight="800" fill="white">Code</text>
+      <text x="660" y="534" text-anchor="middle" font-size="13" font-weight="600" fill="#ddd6fe">opus-4-7</text>
     </g>
     <!-- 中心の上下に Hook と Rules の存在を示す -->
     <g>
-      <text x="660" y="395" text-anchor="middle" font-size="12" font-weight="700" fill="#6b7280">⚡ Hook 12本（実行タイミング別の自動化）</text>
-      <text x="660" y="595" text-anchor="middle" font-size="12" font-weight="700" fill="#6b7280">📜 Rules 24本（全プロジェクト共通ルール集）</text>
+      <text x="660" y="385" text-anchor="middle" font-size="15" font-weight="700" fill="#6b7280">⚡ Hook 12本（実行タイミング別の自動化）</text>
+      <text x="660" y="605" text-anchor="middle" font-size="15" font-weight="700" fill="#6b7280">📜 Rules 24本（全プロジェクト共通ルール集）</text>
     </g>
 
     <!-- ===== 左下: 開発支援 (5本) ===== -->
@@ -787,10 +804,10 @@ code {
       <text x="660" y="680" class="cat-desc-b" fill="#475569">Google Apps Script のコード管理</text>
       <!-- clasp 大きく中央 -->
       <rect x="520" y="710" width="280" height="120" class="node-rect-b" fill="white" stroke="#7c3aed" stroke-width="2"/>
-      <text x="660" y="752" text-anchor="middle" font-size="22" font-weight="800" fill="#5b21b6">clasp</text>
-      <text x="660" y="780" class="node-desc-b" fill="#475569">GAS プロジェクトの作成・push/pull</text>
-      <text x="660" y="800" class="node-desc-b" fill="#475569">GAS スキル群と連携</text>
-      <text x="660" y="858" class="cat-desc-b" fill="#94a3b8" font-style="italic">※ 業務用 GAS の保守で活用</text>
+      <text x="660" y="755" text-anchor="middle" font-size="26" font-weight="800" fill="#5b21b6">clasp</text>
+      <text x="660" y="785" class="node-desc-b" fill="#475569">GAS プロジェクトの作成・push/pull</text>
+      <text x="660" y="808" class="node-desc-b" fill="#475569">GAS スキル群と連携</text>
+      <text x="660" y="862" class="cat-desc-b" fill="#94a3b8" font-style="italic">※ 業務用 GAS の保守で活用</text>
     </g>
 
     <!-- ===== 右下: 業務連携 (6本) ===== -->
@@ -831,38 +848,38 @@ code {
       <rect x="40" y="920" width="610" height="160" rx="14" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
       <text x="345" y="950" class="cat-label-b" fill="#14532d">📋 Skill 158個</text>
       <text x="345" y="970" class="cat-desc-b" fill="#475569">「定型作業の手順書」を CC に渡したもの・/skill-name で起動</text>
-      <g font-size="12" font-weight="700" text-anchor="middle">
+      <g font-size="15" font-weight="700" text-anchor="middle">
         <rect x="55" y="985" width="135" height="35" class="node-rect-b" fill="white" stroke="#22c55e" stroke-width="1.5"/>
         <text x="122" y="1001" fill="#15803d">社内</text>
-        <text x="122" y="1015" fill="#475569" font-size="10">5 個</text>
+        <text x="122" y="1015" fill="#475569" font-size="12">5 個</text>
         <rect x="200" y="985" width="135" height="35" class="node-rect-b" fill="white" stroke="#22c55e" stroke-width="1.5"/>
         <text x="267" y="1001" fill="#15803d">CC運用</text>
-        <text x="267" y="1015" fill="#475569" font-size="10">10 個</text>
+        <text x="267" y="1015" fill="#475569" font-size="12">10 個</text>
         <rect x="345" y="985" width="135" height="35" class="node-rect-b" fill="white" stroke="#22c55e" stroke-width="1.5"/>
         <text x="412" y="1001" fill="#15803d">GWS</text>
-        <text x="412" y="1015" fill="#475569" font-size="10">44 個</text>
+        <text x="412" y="1015" fill="#475569" font-size="12">44 個</text>
         <rect x="490" y="985" width="135" height="35" class="node-rect-b" fill="white" stroke="#22c55e" stroke-width="1.5"/>
         <text x="557" y="1001" fill="#15803d">Recipe</text>
-        <text x="557" y="1015" fill="#475569" font-size="10">41 個</text>
+        <text x="557" y="1015" fill="#475569" font-size="12">41 個</text>
         <rect x="55" y="1030" width="135" height="35" class="node-rect-b" fill="white" stroke="#22c55e" stroke-width="1.5"/>
         <text x="122" y="1046" fill="#15803d">GCloud</text>
-        <text x="122" y="1060" fill="#475569" font-size="10">32 個</text>
+        <text x="122" y="1060" fill="#475569" font-size="12">32 個</text>
         <rect x="200" y="1030" width="135" height="35" class="node-rect-b" fill="white" stroke="#22c55e" stroke-width="1.5"/>
         <text x="267" y="1046" fill="#15803d">ナレッジ</text>
-        <text x="267" y="1060" fill="#475569" font-size="10">10 個</text>
+        <text x="267" y="1060" fill="#475569" font-size="12">10 個</text>
         <rect x="345" y="1030" width="135" height="35" class="node-rect-b" fill="white" stroke="#22c55e" stroke-width="1.5"/>
         <text x="412" y="1046" fill="#15803d">デザイン</text>
-        <text x="412" y="1060" fill="#475569" font-size="10">3 個</text>
+        <text x="412" y="1060" fill="#475569" font-size="12">3 個</text>
         <rect x="490" y="1030" width="135" height="35" class="node-rect-b" fill="white" stroke="#22c55e" stroke-width="1.5"/>
         <text x="557" y="1046" fill="#15803d">業務API</text>
-        <text x="557" y="1060" fill="#475569" font-size="10">4 個</text>
+        <text x="557" y="1060" fill="#475569" font-size="12">4 個</text>
       </g>
 
       <!-- CLI 26本+ -->
       <rect x="680" y="920" width="600" height="160" rx="14" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
       <text x="980" y="950" class="cat-label-b" fill="#7c2d12">🛠️ CLI 26本+（主要 12 本）</text>
       <text x="980" y="970" class="cat-desc-b" fill="#475569">ターミナルから直接たたくコマンドラインツール</text>
-      <g font-size="12" font-weight="700" text-anchor="middle">
+      <g font-size="15" font-weight="700" text-anchor="middle">
         <rect x="695" y="985" width="92" height="35" class="node-rect-b" fill="white" stroke="#ea580c" stroke-width="1.5"/>
         <text x="741" y="1006" fill="#9a3412">brew</text>
         <rect x="795" y="985" width="92" height="35" class="node-rect-b" fill="white" stroke="#ea580c" stroke-width="1.5"/>
@@ -891,17 +908,18 @@ code {
     </g>
 
     <!-- ===== 凡例（中心の右） ===== -->
-    <g transform="translate(770,475)" font-family="-apple-system,sans-serif">
-      <rect x="0" y="0" width="120" height="30" rx="6" fill="white" stroke="#cbd5e1" stroke-width="1.5"/>
-      <text x="10" y="20" font-size="12" font-weight="700" fill="#dc2626">⚠️ 代替不可</text>
+    <g transform="translate(800,465)" font-family="-apple-system,sans-serif">
+      <rect x="0" y="0" width="160" height="36" rx="6" fill="white" stroke="#cbd5e1" stroke-width="1.5"/>
+      <text x="12" y="23" font-size="15" font-weight="700" fill="#dc2626">⚠️ 代替不可</text>
     </g>
-    <g transform="translate(770,510)" font-family="-apple-system,sans-serif">
-      <rect x="0" y="0" width="120" height="30" rx="6" fill="white" stroke="#cbd5e1" stroke-width="1.5"/>
-      <text x="10" y="20" font-size="11" font-weight="600" fill="#475569">━ ━ 中心への接続</text>
+    <g transform="translate(800,510)" font-family="-apple-system,sans-serif">
+      <rect x="0" y="0" width="160" height="36" rx="6" fill="white" stroke="#cbd5e1" stroke-width="1.5"/>
+      <text x="12" y="23" font-size="14" font-weight="600" fill="#475569">━ ━ 中心への接続</text>
     </g>
   </svg>
   </div>
-  <p style="font-size:11px;color:var(--text3);text-align:center;margin-top:8px">▲ MCP 23本を6カテゴリで全展開（個別ノード）+ Skill 8カテゴリ + CLI 主要 12本。⚠️ = これがないと困る代替不可ツール</p>
+  <p style="font-size:12px;color:var(--text3);text-align:center;margin-top:8px">▲ MCP 23本を6カテゴリで全展開(個別ノード)+ Skill 8カテゴリ + CLI 主要 12本。⚠️ = これがないと困る代替不可ツール</p>
+ </div>
 </section>
 
 <!-- ===== SECTION 1: CCとは ===== -->
