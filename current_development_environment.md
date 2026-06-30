@@ -1,7 +1,7 @@
 ---
 title: Claude Code 開発環境リファレンス 2026-06-29
 date: 2026-06-29
-updated: 2026-06-29
+updated: 2026-06-30
 tags:
   - env
   - mcp
